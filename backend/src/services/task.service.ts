@@ -10,6 +10,8 @@ interface TaskFilters {
   search?: string;
   page?: number;
   limit?: number;
+  sortBy?: string;
+  sortOrder?: string;
 }
 
 export class TaskService {
@@ -39,6 +41,20 @@ export class TaskService {
       };
     }
 
+    // Build orderBy from sortBy/sortOrder params
+    const allowedSortFields = [
+      'name', 'status', 'priority', 'receivedDate', 'startDate',
+      'estimatedCompletionDate', 'actualCompletionDate', 'estimatedHours',
+      'actualHours', 'queueOrder', 'createdAt', 'updatedAt',
+    ];
+    let orderBy: any;
+    if (filters.sortBy && allowedSortFields.includes(filters.sortBy)) {
+      const direction = filters.sortOrder === 'asc' ? 'asc' : 'desc';
+      orderBy = [{ [filters.sortBy]: direction }];
+    } else {
+      orderBy = [{ receivedDate: 'desc' as const }, { createdAt: 'desc' as const }];
+    }
+
     const [tasks, total] = await Promise.all([
       prisma.task.findMany({
         where,
@@ -57,7 +73,7 @@ export class TaskService {
             },
           },
         },
-        orderBy: [{ queueOrder: 'asc' }, { createdAt: 'desc' }],
+        orderBy,
         skip,
         take: limit,
       }),
@@ -249,6 +265,33 @@ export class TaskService {
     }
 
     return task;
+  }
+
+  async bulkUpdateStatus(taskIds: string[], status: string, userId: string) {
+    // Get current status for each task to log history
+    const tasks = await prisma.task.findMany({
+      where: { id: { in: taskIds } },
+      select: { id: true, status: true },
+    });
+
+    if (tasks.length === 0) {
+      throw new Error('NO_TASKS_FOUND');
+    }
+
+    // Update all tasks
+    await prisma.task.updateMany({
+      where: { id: { in: taskIds } },
+      data: { status: status as any },
+    });
+
+    // Log history for each changed task
+    for (const task of tasks) {
+      if (task.status !== status) {
+        await historyService.logChange(task.id, userId, 'status', task.status, status);
+      }
+    }
+
+    return { updatedCount: tasks.length };
   }
 
   async delete(id: string) {

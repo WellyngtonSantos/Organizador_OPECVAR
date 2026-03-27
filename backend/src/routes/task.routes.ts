@@ -7,6 +7,7 @@ const router = Router();
 router.use(authMiddleware);
 
 router.get('/', (req, res, next) => taskController.list(req, res, next));
+router.patch('/bulk-status', (req, res, next) => taskController.bulkUpdateStatus(req, res, next));
 router.get('/:id', (req, res, next) => taskController.getById(req, res, next));
 router.post('/', (req, res, next) => taskController.create(req, res, next));
 router.put('/:id', (req, res, next) => taskController.update(req, res, next));

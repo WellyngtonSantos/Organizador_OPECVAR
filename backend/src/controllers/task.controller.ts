@@ -3,13 +3,13 @@ import { AuthRequest } from '../middleware/auth';
 import { taskService } from '../services/task.service';
 import { noteService } from '../services/note.service';
 import { historyService } from '../services/history.service';
-import { createTaskSchema, updateTaskSchema } from '../schemas/task.schema';
+import { createTaskSchema, updateTaskSchema, bulkStatusSchema } from '../schemas/task.schema';
 import { createNoteSchema } from '../schemas/note.schema';
 
 export class TaskController {
   async list(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      const { status, priority, bucketId, analystId, search, page, limit } = req.query;
+      const { status, priority, bucketId, analystId, search, page, limit, sortBy, sortOrder } = req.query;
       const result = await taskService.findAll({
         status: status as string,
         priority: priority as string,
@@ -18,6 +18,8 @@ export class TaskController {
         search: search as string,
         page: page ? Number(page) : undefined,
         limit: limit ? Number(limit) : undefined,
+        sortBy: sortBy as string,
+        sortOrder: sortOrder as string,
       });
       res.json(result);
     } catch (error) {
@@ -69,6 +71,20 @@ export class TaskController {
     } catch (error: any) {
       if (error.message === 'TASK_NOT_FOUND') {
         res.status(404).json({ error: 'Not Found', message: 'Tarefa não encontrada' });
+        return;
+      }
+      next(error);
+    }
+  }
+
+  async bulkUpdateStatus(req: AuthRequest, res: Response, next: NextFunction) {
+    try {
+      const data = bulkStatusSchema.parse(req.body);
+      const result = await taskService.bulkUpdateStatus(data.taskIds, data.status, req.user!.id);
+      res.json(result);
+    } catch (error: any) {
+      if (error.message === 'NO_TASKS_FOUND') {
+        res.status(404).json({ error: 'Not Found', message: 'Nenhuma tarefa encontrada' });
         return;
       }
       next(error);

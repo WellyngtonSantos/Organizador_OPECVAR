@@ -30,5 +30,11 @@ export const updateTaskSchema = z.object({
   labelIds: z.array(z.string().uuid()).optional(),
 });
 
+export const bulkStatusSchema = z.object({
+  taskIds: z.array(z.string().uuid()).min(1, 'Selecione pelo menos uma tarefa'),
+  status: z.enum(['NOT_STARTED', 'IN_PROGRESS', 'STAND_BY', 'COMPLETED', 'CANCELED']),
+});
+
 export type CreateTaskInput = z.infer<typeof createTaskSchema>;
 export type UpdateTaskInput = z.infer<typeof updateTaskSchema>;
+export type BulkStatusInput = z.infer<typeof bulkStatusSchema>;

@@ -3,6 +3,7 @@ import authRoutes from './auth.routes';
 import taskRoutes from './task.routes';
 import bucketRoutes from './bucket.routes';
 import labelRoutes from './label.routes';
+import userRoutes from './user.routes';
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use('/auth', authRoutes);
 router.use('/tasks', taskRoutes);
 router.use('/buckets', bucketRoutes);
 router.use('/labels', labelRoutes);
+router.use('/users', userRoutes);
 
 export default router;

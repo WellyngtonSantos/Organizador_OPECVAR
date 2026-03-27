@@ -5,22 +5,14 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import AppShell from './components/layout/AppShell';
 import LoginPage from './pages/LoginPage';
+import TaskListPage from './pages/TaskListPage';
 
 // Placeholder pages - will be implemented in later phases
-function TaskListPage() {
-  return (
-    <div>
-      <h2>Tarefas</h2>
-      <p>Módulo de tarefas será implementado na Fase 4.</p>
-    </div>
-  );
-}
-
 function DashboardPage() {
   return (
     <div>
       <h2>Dashboard</h2>
-      <p>Dashboard semanal será implementado na Fase 7.</p>
+      <p>Dashboard semanal sera implementado na Fase 7.</p>
     </div>
   );
 }
@@ -28,8 +20,8 @@ function DashboardPage() {
 function SettingsPage() {
   return (
     <div>
-      <h2>Configurações</h2>
-      <p>Configurações serão implementadas na Fase 8.</p>
+      <h2>Configuracoes</h2>
+      <p>Configuracoes serao implementadas na Fase 8.</p>
     </div>
   );
 }
