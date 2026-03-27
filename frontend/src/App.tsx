@@ -3,22 +3,35 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import AppShell from './components/layout/AppShell';
+import LoginPage from './pages/LoginPage';
 
 // Placeholder pages - will be implemented in later phases
-function LoginPage() {
-  return <div>Login Page - Coming in Phase 2</div>;
-}
-
 function TaskListPage() {
-  return <div>Task List - Coming in Phase 4</div>;
+  return (
+    <div>
+      <h2>Tarefas</h2>
+      <p>Módulo de tarefas será implementado na Fase 4.</p>
+    </div>
+  );
 }
 
 function DashboardPage() {
-  return <div>Dashboard - Coming in Phase 7</div>;
+  return (
+    <div>
+      <h2>Dashboard</h2>
+      <p>Dashboard semanal será implementado na Fase 7.</p>
+    </div>
+  );
 }
 
 function SettingsPage() {
-  return <div>Settings - Coming in Phase 8</div>;
+  return (
+    <div>
+      <h2>Configurações</h2>
+      <p>Configurações serão implementadas na Fase 8.</p>
+    </div>
+  );
 }
 
 export default function App() {
@@ -29,10 +42,12 @@ export default function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route element={<ProtectedRoute />}>
-              <Route path="/tasks" element={<TaskListPage />} />
-              <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/settings" element={<SettingsPage />} />
-              <Route path="/" element={<Navigate to="/tasks" replace />} />
+              <Route element={<AppShell />}>
+                <Route path="/tasks" element={<TaskListPage />} />
+                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/settings" element={<SettingsPage />} />
+                <Route path="/" element={<Navigate to="/tasks" replace />} />
+              </Route>
             </Route>
           </Routes>
         </BrowserRouter>
