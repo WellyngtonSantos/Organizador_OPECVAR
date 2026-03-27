@@ -11,6 +11,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import AddIcon from '@mui/icons-material/Add';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 import DescriptionIcon from '@mui/icons-material/Description';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import { useTasks } from '../hooks/useTasks';
@@ -22,6 +23,7 @@ import type { CreateTaskInput } from '../types/task';
 import TaskFilters from '../components/tasks/TaskFilters';
 import TaskDataGrid from '../components/tasks/TaskDataGrid';
 import TaskDetailPanel from '../components/tasks/TaskDetailPanel';
+import ImportDialog from '../components/tasks/ImportDialog';
 
 interface SnackbarState {
   open: boolean;
@@ -140,6 +142,14 @@ export default function TaskListPage() {
     [filters],
   );
 
+  // Import dialog
+  const [importOpen, setImportOpen] = useState(false);
+
+  const handleImported = useCallback(() => {
+    fetchTasks(filters);
+    setSnackbar({ open: true, message: 'Tarefas importadas com sucesso!', severity: 'success' });
+  }, [fetchTasks, filters]);
+
   return (
     <Box>
       {/* Page header */}
@@ -151,6 +161,13 @@ export default function TaskListPage() {
       >
         <Typography variant="h4">Tarefas</Typography>
         <Stack direction="row" spacing={1}>
+          <Button
+            variant="outlined"
+            startIcon={<FileUploadIcon />}
+            onClick={() => setImportOpen(true)}
+          >
+            Importar
+          </Button>
           <Button
             variant="outlined"
             startIcon={<FileDownloadIcon />}
@@ -215,6 +232,13 @@ export default function TaskListPage() {
         }}
         onTaskUpdated={handleTaskUpdated}
         onTaskDeleted={handleTaskDeleted}
+      />
+
+      {/* Import Dialog */}
+      <ImportDialog
+        open={importOpen}
+        onClose={() => setImportOpen(false)}
+        onImported={handleImported}
       />
 
       {/* Snackbar feedback */}
