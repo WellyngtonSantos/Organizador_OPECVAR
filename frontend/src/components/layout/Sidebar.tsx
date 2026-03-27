@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import ViewListIcon from '@mui/icons-material/ViewList';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SettingsIcon from '@mui/icons-material/Settings';
 
@@ -17,6 +18,7 @@ const DRAWER_WIDTH = 260;
 
 const menuItems = [
   { text: 'Tarefas', icon: <AssignmentIcon />, path: '/tasks' },
+  { text: 'Fila', icon: <ViewListIcon />, path: '/queue' },
   { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
   { text: 'Configurações', icon: <SettingsIcon />, path: '/settings' },
 ];

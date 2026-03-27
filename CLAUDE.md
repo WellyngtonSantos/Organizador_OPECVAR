@@ -55,13 +55,13 @@ User, Bucket, Label, Task, TaskLabel, TaskNote, TaskHistory, TimerSession
 | 3 | CRUD Core (Tasks, Buckets, Labels services/controllers/routes + API clients/hooks) | Concluida | adecaa5 |
 | 4 | Tela Principal (TaskDataGrid, filtros, destaque visual, TaskDetailPanel) | Concluida | 7b89873 |
 | 5 | Timer e Horas (start/stop timer, useTimer, TaskTimer) | Concluida | - |
-| 6 | Fila Drag-and-Drop por Analista (reorder, AnalystQueue, QueueCard, @dnd-kit) | Pendente | - |
+| 6 | Fila Drag-and-Drop por Analista (reorder, AnalystQueue, QueueCard, @dnd-kit) | Concluida | - |
 | 7 | Dashboard Semanal (agregacoes, WeekSelector, SummaryCards, Recharts) | Pendente | - |
 | 8 | Export + Polish (CSV/XLSX, SettingsPage, dark mode toggle, loading states) | Pendente | - |
 
-## Proxima fase: 6 - Fila Drag-and-Drop por Analista
-Backend: reorder endpoint
-Frontend: AnalystQueue, QueueCard, @dnd-kit integration
+## Proxima fase: 7 - Dashboard Semanal
+Backend: agregacoes semanais
+Frontend: WeekSelector, SummaryCards, graficos Recharts
 
 ## Comandos uteis
 ```bash

@@ -6,6 +6,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import AppShell from './components/layout/AppShell';
 import LoginPage from './pages/LoginPage';
 import TaskListPage from './pages/TaskListPage';
+import QueuePage from './pages/QueuePage';
 
 // Placeholder pages - will be implemented in later phases
 function DashboardPage() {
@@ -36,6 +37,7 @@ export default function App() {
             <Route element={<ProtectedRoute />}>
               <Route element={<AppShell />}>
                 <Route path="/tasks" element={<TaskListPage />} />
+                <Route path="/queue" element={<QueuePage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
                 <Route path="/" element={<Navigate to="/tasks" replace />} />
