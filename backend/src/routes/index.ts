@@ -4,6 +4,7 @@ import taskRoutes from './task.routes';
 import bucketRoutes from './bucket.routes';
 import labelRoutes from './label.routes';
 import userRoutes from './user.routes';
+import timerRoutes from './timer.routes';
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use('/tasks', taskRoutes);
 router.use('/buckets', bucketRoutes);
 router.use('/labels', labelRoutes);
 router.use('/users', userRoutes);
+router.use('/timers', timerRoutes);
 
 export default router;

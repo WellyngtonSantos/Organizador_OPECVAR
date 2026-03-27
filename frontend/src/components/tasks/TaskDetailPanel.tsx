@@ -10,6 +10,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useTask } from '../../hooks/useTask';
+import { useTimer } from '../../hooks/useTimer';
 import { useBuckets } from '../../hooks/useBuckets';
 import { useLabels } from '../../hooks/useLabels';
 import { useAnalysts } from '../../hooks/useAnalysts';
@@ -17,6 +18,7 @@ import type { CreateTaskInput, UpdateTaskInput } from '../../types/task';
 import TaskForm from './TaskForm';
 import TaskNotes from './TaskNotes';
 import TaskHistoryList from './TaskHistoryList';
+import TaskTimer from './TaskTimer';
 import ConfirmDialog from '../common/ConfirmDialog';
 
 interface TaskDetailPanelProps {
@@ -60,6 +62,17 @@ export default function TaskDetailPanel({
     fetchHistory,
   } = useTask(mode === 'edit' && taskId ? taskId : undefined);
 
+  const {
+    activeSession,
+    elapsed,
+    startTimer,
+    stopTimer,
+    sessions,
+    sessionsLoading,
+    fetchSessions,
+    deleteSession,
+  } = useTimer();
+
   const { buckets } = useBuckets();
   const { labels } = useLabels();
   const { analysts } = useAnalysts();
@@ -68,6 +81,9 @@ export default function TaskDetailPanel({
     setActiveTab(newValue);
     if (newValue === 2 && history.length === 0) {
       fetchHistory();
+    }
+    if (newValue === 3 && taskId) {
+      fetchSessions(taskId);
     }
   };
 
@@ -172,6 +188,7 @@ export default function TaskDetailPanel({
                 <Tab label="Detalhes" />
                 <Tab label="Notas" />
                 <Tab label="Historico" />
+                <Tab label="Timer" />
               </Tabs>
             )}
 
@@ -200,6 +217,19 @@ export default function TaskDetailPanel({
 
               {mode === 'edit' && activeTab === 2 && (
                 <TaskHistoryList history={history} loading={historyLoading} />
+              )}
+
+              {mode === 'edit' && activeTab === 3 && taskId && (
+                <TaskTimer
+                  taskId={taskId}
+                  activeSession={activeSession?.taskId === taskId ? activeSession : null}
+                  elapsed={activeSession?.taskId === taskId ? elapsed : 0}
+                  onStart={async () => { await startTimer(taskId); }}
+                  onStop={async () => { await stopTimer(); fetchSessions(taskId); }}
+                  sessions={sessions}
+                  sessionsLoading={sessionsLoading}
+                  onDeleteSession={deleteSession}
+                />
               )}
             </Box>
           </>

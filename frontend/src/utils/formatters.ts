@@ -34,3 +34,10 @@ export const priorityColors: Record<Priority, string> = {
   [Priority.HIGH]: '#f57c00',
   [Priority.URGENT]: '#d32f2f',
 };
+
+export function formatElapsed(totalSeconds: number): string {
+  const h = Math.floor(totalSeconds / 3600);
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  const s = totalSeconds % 60;
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}

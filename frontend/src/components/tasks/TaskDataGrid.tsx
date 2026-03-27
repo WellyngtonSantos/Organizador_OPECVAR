@@ -9,6 +9,8 @@ import {
   GridToolbarContainer,
   GridToolbarDensitySelector,
 } from '@mui/x-data-grid';
+import Chip from '@mui/material/Chip';
+import TimerIcon from '@mui/icons-material/Timer';
 import type { Task } from '../../types/task';
 import StatusChip from '../common/StatusChip';
 import PriorityChip from '../common/PriorityChip';
@@ -24,6 +26,7 @@ interface TaskDataGridProps {
   pageSize: number;
   onPageChange: (page: number, pageSize: number) => void;
   onRowClick: (taskId: string) => void;
+  activeTimerTaskId?: string | null;
 }
 
 function CustomToolbar() {
@@ -34,12 +37,28 @@ function CustomToolbar() {
   );
 }
 
-const columns: GridColDef[] = [
+function getColumns(activeTimerTaskId?: string | null): GridColDef[] {
+  return [
   {
     field: 'name',
     headerName: 'Nome',
     flex: 2,
     minWidth: 200,
+    renderCell: (params: GridRenderCellParams<Task>) => (
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, height: '100%' }}>
+        {params.row.name}
+        {activeTimerTaskId === params.row.id && (
+          <Chip
+            icon={<TimerIcon />}
+            label="Ativo"
+            size="small"
+            color="error"
+            variant="outlined"
+            sx={{ height: 22, fontSize: '0.7rem' }}
+          />
+        )}
+      </Box>
+    ),
   },
   {
     field: 'analyst',
@@ -106,7 +125,16 @@ const columns: GridColDef[] = [
     width: 100,
     valueGetter: (_value: unknown, row: Task) => formatHours(row.estimatedHours),
   },
+  {
+    field: 'actualHours',
+    headerName: 'Horas Reais',
+    width: 120,
+    renderCell: (params: GridRenderCellParams<Task>) => {
+      return formatHours(params.row.actualHours || null);
+    },
+  },
 ];
+}
 
 export default function TaskDataGrid({
   tasks,
@@ -116,6 +144,7 @@ export default function TaskDataGrid({
   pageSize,
   onPageChange,
   onRowClick,
+  activeTimerTaskId,
 }: TaskDataGridProps) {
   const handlePaginationModelChange = (model: GridPaginationModel) => {
     onPageChange(model.page + 1, model.pageSize);
@@ -129,7 +158,7 @@ export default function TaskDataGrid({
     <Box sx={{ width: '100%' }}>
       <DataGrid
         rows={tasks}
-        columns={columns}
+        columns={getColumns(activeTimerTaskId)}
         loading={loading}
         rowCount={total}
         paginationMode="server"

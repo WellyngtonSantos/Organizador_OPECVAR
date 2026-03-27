@@ -7,6 +7,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import AddIcon from '@mui/icons-material/Add';
 import { useTasks } from '../hooks/useTasks';
+import { useTimer } from '../hooks/useTimer';
 import { useBuckets } from '../hooks/useBuckets';
 import { useAnalysts } from '../hooks/useAnalysts';
 import type { FilterParams } from '../types/common';
@@ -33,6 +34,7 @@ export default function TaskListPage() {
   });
 
   const { tasks, total, loading, fetchTasks, createTask, deleteTask } = useTasks(filters);
+  const { activeSession } = useTimer();
   const { buckets } = useBuckets();
   const { analysts } = useAnalysts();
 
@@ -123,6 +125,7 @@ export default function TaskListPage() {
         pageSize={filters.pageSize ?? 25}
         onPageChange={handlePageChange}
         onRowClick={handleRowClick}
+        activeTimerTaskId={activeSession?.taskId}
       />
 
       {/* Detail Panel */}

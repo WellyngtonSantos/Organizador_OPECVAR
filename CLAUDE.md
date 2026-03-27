@@ -52,16 +52,16 @@ User, Bucket, Label, Task, TaskLabel, TaskNote, TaskHistory, TimerSession
 |------|-----------|--------|--------|
 | 1 | Esqueleto do Projeto (monorepo, schemas, seed, tipos, tema) | Concluida | 645db84 |
 | 2 | Autenticacao (JWT, login/register, middleware, UI) | Concluida | e58df28 |
-| 3 | CRUD Core (Tasks, Buckets, Labels services/controllers/routes + API clients/hooks) | Pendente | - |
-| 4 | Tela Principal (TaskDataGrid, filtros, destaque visual, TaskDetailPanel) | Pendente | - |
-| 5 | Timer e Horas (start/stop timer, useTimer, TaskTimer) | Pendente | - |
+| 3 | CRUD Core (Tasks, Buckets, Labels services/controllers/routes + API clients/hooks) | Concluida | adecaa5 |
+| 4 | Tela Principal (TaskDataGrid, filtros, destaque visual, TaskDetailPanel) | Concluida | 7b89873 |
+| 5 | Timer e Horas (start/stop timer, useTimer, TaskTimer) | Concluida | - |
 | 6 | Fila Drag-and-Drop por Analista (reorder, AnalystQueue, QueueCard, @dnd-kit) | Pendente | - |
 | 7 | Dashboard Semanal (agregacoes, WeekSelector, SummaryCards, Recharts) | Pendente | - |
 | 8 | Export + Polish (CSV/XLSX, SettingsPage, dark mode toggle, loading states) | Pendente | - |
 
-## Proxima fase: 3 - CRUD Core
-Backend: Services + Controllers + Routes para Tasks, Buckets, Labels + History service
-Frontend: API clients, hooks customizados, tipos TypeScript
+## Proxima fase: 6 - Fila Drag-and-Drop por Analista
+Backend: reorder endpoint
+Frontend: AnalystQueue, QueueCard, @dnd-kit integration
 
 ## Comandos uteis
 ```bash
