@@ -13,6 +13,7 @@ import { SelectChangeEvent } from '@mui/material/Select';
 import { useAnalysts } from '../hooks/useAnalysts';
 import { useQueue } from '../hooks/useQueue';
 import AnalystQueue from '../components/queue/AnalystQueue';
+import PageSkeleton from '../components/common/PageSkeleton';
 
 export default function QueuePage() {
   const [selectedAnalystId, setSelectedAnalystId] = useState<string>('');
@@ -84,19 +85,23 @@ export default function QueuePage() {
         </FormControl>
       </Stack>
 
-      <Paper sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 2 }}>
-        <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }}>
-          Arraste as tarefas para reorganizar a ordem de prioridade de {selectedAnalyst?.name ?? 'analista'}.
-        </Typography>
+      {loading && tasks.length === 0 ? (
+        <PageSkeleton variant="queue" />
+      ) : (
+        <Paper sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 2 }}>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }}>
+            Arraste as tarefas para reorganizar a ordem de prioridade de {selectedAnalyst?.name ?? 'analista'}.
+          </Typography>
 
-        <AnalystQueue
-          analystName={selectedAnalyst?.name ?? ''}
-          tasks={tasks}
-          loading={loading}
-          onReorder={handleReorder}
-          onSetTasks={setTasks}
-        />
-      </Paper>
+          <AnalystQueue
+            analystName={selectedAnalyst?.name ?? ''}
+            tasks={tasks}
+            loading={loading}
+            onReorder={handleReorder}
+            onSetTasks={setTasks}
+          />
+        </Paper>
+      )}
 
       <Snackbar
         open={snackbar.open}

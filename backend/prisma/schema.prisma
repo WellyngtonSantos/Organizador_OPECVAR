@@ -63,6 +63,7 @@ model Label {
 model Task {
   id                      String    @id @default(uuid())
   name                    String
+  description             String?
   analystId               String
   analyst                 User      @relation("AssignedAnalyst", fields: [analystId], references: [id])
   createdById             String

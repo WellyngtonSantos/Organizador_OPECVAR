@@ -7,6 +7,7 @@ import userRoutes from './user.routes';
 import timerRoutes from './timer.routes';
 import queueRoutes from './queue.routes';
 import dashboardRoutes from './dashboard.routes';
+import exportRoutes from './export.routes';
 
 const router = Router();
 
@@ -22,5 +23,6 @@ router.use('/users', userRoutes);
 router.use('/timers', timerRoutes);
 router.use('/queues', queueRoutes);
 router.use('/dashboard', dashboardRoutes);
+router.use('/export', exportRoutes);
 
 export default router;

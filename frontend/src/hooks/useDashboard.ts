@@ -6,7 +6,7 @@ interface UseDashboardReturn {
   dashboard: WeeklyDashboard | null;
   loading: boolean;
   error: string | null;
-  fetchDashboard: (weekStart: string) => Promise<void>;
+  fetchDashboard: (weekStart: string, analystId?: string) => Promise<void>;
 }
 
 export function useDashboard(): UseDashboardReturn {
@@ -14,11 +14,11 @@ export function useDashboard(): UseDashboardReturn {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchDashboard = useCallback(async (weekStart: string) => {
+  const fetchDashboard = useCallback(async (weekStart: string, analystId?: string) => {
     setLoading(true);
     setError(null);
     try {
-      const data = await dashboardApi.getWeeklyDashboard(weekStart);
+      const data = await dashboardApi.getWeeklyDashboard(weekStart, analystId);
       setDashboard(data);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Erro ao carregar dashboard';

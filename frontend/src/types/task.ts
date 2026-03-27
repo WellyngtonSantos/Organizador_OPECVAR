@@ -57,6 +57,7 @@ export interface TimerSession {
 export interface Task {
   id: string;
   name: string;
+  description: string | null;
   analystId: string;
   analyst: { id: string; name: string };
   createdById: string;
@@ -82,6 +83,7 @@ export interface Task {
 
 export interface CreateTaskInput {
   name: string;
+  description?: string | null;
   analystId: string;
   receivedDate: string;
   startDate?: string | null;
@@ -96,6 +98,7 @@ export interface CreateTaskInput {
 
 export interface UpdateTaskInput {
   name?: string;
+  description?: string | null;
   analystId?: string;
   receivedDate?: string;
   startDate?: string | null;

@@ -27,6 +27,7 @@ interface TaskFormProps {
 
 interface FormState {
   name: string;
+  description: string;
   analystId: string;
   bucketId: string;
   priority: Priority;
@@ -55,6 +56,7 @@ export default function TaskForm({
 }: TaskFormProps) {
   const [form, setForm] = useState<FormState>({
     name: '',
+    description: '',
     analystId: '',
     bucketId: '',
     priority: Priority.MEDIUM,
@@ -72,6 +74,7 @@ export default function TaskForm({
     if (mode === 'edit' && task) {
       setForm({
         name: task.name,
+        description: task.description ?? '',
         analystId: task.analystId,
         bucketId: task.bucketId ?? '',
         priority: task.priority,
@@ -116,6 +119,7 @@ export default function TaskForm({
 
     const data: CreateTaskInput | UpdateTaskInput = {
       name: form.name.trim(),
+      description: form.description.trim() || null,
       analystId: form.analystId,
       bucketId: form.bucketId || null,
       priority: form.priority,
@@ -144,6 +148,18 @@ export default function TaskForm({
           required
           fullWidth
           size="small"
+        />
+
+        <TextField
+          label="Descricao"
+          value={form.description}
+          onChange={handleChange('description')}
+          fullWidth
+          size="small"
+          multiline
+          minRows={3}
+          maxRows={8}
+          placeholder="Anotacoes, detalhes, instrucoes..."
         />
 
         <FormControl size="small" fullWidth required error={!!errors.analystId}>

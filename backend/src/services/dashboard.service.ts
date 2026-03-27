@@ -42,19 +42,19 @@ interface WeeklyDashboardResult {
 }
 
 export class DashboardService {
-  async getWeeklyDashboard(weekStart: string): Promise<WeeklyDashboardResult> {
+  async getWeeklyDashboard(weekStart: string, analystId?: string): Promise<WeeklyDashboardResult> {
     const baseDate = new Date(weekStart);
     const { start, end } = getWeekRange(baseDate);
 
     const [summary, hoursPerDay, hoursPerAnalyst, bucketDistribution, weeklyTasks, efficiency, overdueAlerts] =
       await Promise.all([
-        this.getSummary(start, end),
-        this.getHoursPerDay(start, end),
-        this.getHoursPerAnalyst(start, end),
-        this.getBucketDistribution(start, end),
-        this.getWeeklyTasks(start, end),
-        this.getEfficiency(start, end),
-        this.getOverdueAlerts(),
+        this.getSummary(start, end, analystId),
+        this.getHoursPerDay(start, end, analystId),
+        this.getHoursPerAnalyst(start, end, analystId),
+        this.getBucketDistribution(start, end, analystId),
+        this.getWeeklyTasks(start, end, analystId),
+        this.getEfficiency(start, end, analystId),
+        this.getOverdueAlerts(analystId),
       ]);
 
     return {
@@ -68,9 +68,11 @@ export class DashboardService {
     };
   }
 
-  private async getSummary(start: Date, end: Date) {
+  private async getSummary(start: Date, end: Date, analystId?: string) {
+    const analystFilter = analystId ? { analystId } : {};
     const tasks = await prisma.task.findMany({
       where: {
+        ...analystFilter,
         OR: [
           { receivedDate: { gte: start, lte: end } },
           {
@@ -113,9 +115,11 @@ export class DashboardService {
     return { open, completed, standBy, overdue };
   }
 
-  private async getHoursPerDay(start: Date, end: Date) {
+  private async getHoursPerDay(start: Date, end: Date, analystId?: string) {
+    const userFilter = analystId ? { userId: analystId } : {};
     const sessions = await prisma.timerSession.findMany({
       where: {
+        ...userFilter,
         startedAt: { gte: start, lte: end },
         stoppedAt: { not: null },
       },
@@ -127,7 +131,6 @@ export class DashboardService {
     const dayMap = new Map<string, number>();
     const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
 
-    // Initialize weekdays
     for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
       const dayLabel = dayNames[d.getDay()];
       if (!dayMap.has(dayLabel)) {
@@ -148,9 +151,10 @@ export class DashboardService {
     }));
   }
 
-  private async getHoursPerAnalyst(start: Date, end: Date) {
+  private async getHoursPerAnalyst(start: Date, end: Date, analystId?: string) {
+    const userFilter = analystId ? { id: analystId } : {};
     const analysts = await prisma.user.findMany({
-      where: { role: 'ANALYST', active: true },
+      where: { role: 'ANALYST', active: true, ...userFilter },
       select: {
         name: true,
         assignedTasks: {
@@ -188,11 +192,13 @@ export class DashboardService {
     });
   }
 
-  private async getBucketDistribution(start: Date, end: Date) {
+  private async getBucketDistribution(start: Date, end: Date, analystId?: string) {
+    const analystFilter = analystId ? { analystId } : {};
     const buckets = await prisma.bucket.findMany({
       include: {
         tasks: {
           where: {
+            ...analystFilter,
             receivedDate: { gte: start, lte: end },
           },
           select: { id: true },
@@ -209,7 +215,8 @@ export class DashboardService {
       .filter((b) => b.count > 0);
   }
 
-  private async getWeeklyTasks(start: Date, end: Date) {
+  private async getWeeklyTasks(start: Date, end: Date, analystId?: string) {
+    const analystFilter = analystId ? { analystId } : {};
     const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
     const result: { day: string; received: number; completed: number }[] = [];
 
@@ -222,11 +229,13 @@ export class DashboardService {
       const [received, completed] = await Promise.all([
         prisma.task.count({
           where: {
+            ...analystFilter,
             receivedDate: { gte: dayStart, lte: dayEnd },
           },
         }),
         prisma.task.count({
           where: {
+            ...analystFilter,
             actualCompletionDate: { gte: dayStart, lte: dayEnd },
           },
         }),
@@ -242,9 +251,11 @@ export class DashboardService {
     return result;
   }
 
-  private async getEfficiency(start: Date, end: Date) {
+  private async getEfficiency(start: Date, end: Date, analystId?: string) {
+    const analystFilter = analystId ? { analystId } : {};
     const tasks = await prisma.task.findMany({
       where: {
+        ...analystFilter,
         status: 'COMPLETED',
         actualCompletionDate: { gte: start, lte: end },
       },
@@ -265,10 +276,12 @@ export class DashboardService {
     };
   }
 
-  private async getOverdueAlerts() {
+  private async getOverdueAlerts(analystId?: string) {
+    const analystFilter = analystId ? { analystId } : {};
     const now = new Date();
     const tasks = await prisma.task.findMany({
       where: {
+        ...analystFilter,
         estimatedCompletionDate: { lt: now },
         status: { in: ['NOT_STARTED', 'IN_PROGRESS', 'STAND_BY'] },
       },

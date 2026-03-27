@@ -58,11 +58,10 @@ User, Bucket, Label, Task, TaskLabel, TaskNote, TaskHistory, TimerSession
 | 5 | Timer e Horas (start/stop timer, useTimer, TaskTimer) | Concluida | - |
 | 6 | Fila Drag-and-Drop por Analista (reorder, AnalystQueue, QueueCard, @dnd-kit) | Concluida | - |
 | 7 | Dashboard Semanal (agregacoes, WeekSelector, SummaryCards, Recharts) | Concluida | - |
-| 8 | Export + Polish (CSV/XLSX, SettingsPage, dark mode toggle, loading states) | Pendente | - |
+| 8 | Export + Polish (CSV/XLSX, SettingsPage, dark mode toggle, loading states) | Concluida | - |
 
-## Proxima fase: 8 - Export + Polish
-Backend: export CSV/XLSX
-Frontend: SettingsPage, dark mode toggle, loading states
+## Status: Todas as fases concluidas!
+O projeto esta completo com todas as 8 fases implementadas.
 
 ## Comandos uteis
 ```bash

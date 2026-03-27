@@ -8,16 +8,9 @@ import LoginPage from './pages/LoginPage';
 import TaskListPage from './pages/TaskListPage';
 import QueuePage from './pages/QueuePage';
 import DashboardPage from './pages/DashboardPage';
-
-// Placeholder pages - will be implemented in later phases
-function SettingsPage() {
-  return (
-    <div>
-      <h2>Configuracoes</h2>
-      <p>Configuracoes serao implementadas na Fase 8.</p>
-    </div>
-  );
-}
+import SettingsPage from './pages/SettingsPage';
+import UsersPage from './pages/UsersPage';
+import AdminPage from './pages/AdminPage';
 
 export default function App() {
   return (
@@ -31,6 +24,8 @@ export default function App() {
                 <Route path="/tasks" element={<TaskListPage />} />
                 <Route path="/queue" element={<QueuePage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/users" element={<UsersPage />} />
+                <Route path="/admin" element={<AdminPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
                 <Route path="/" element={<Navigate to="/tasks" replace />} />
               </Route>

@@ -5,7 +5,14 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import AddIcon from '@mui/icons-material/Add';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import DescriptionIcon from '@mui/icons-material/Description';
+import TableChartIcon from '@mui/icons-material/TableChart';
 import { useTasks } from '../hooks/useTasks';
 import { useTimer } from '../hooks/useTimer';
 import { useBuckets } from '../hooks/useBuckets';
@@ -89,6 +96,50 @@ export default function TaskListPage() {
     setSnackbar((prev) => ({ ...prev, open: false }));
   }, []);
 
+  // Export menu
+  const [exportAnchor, setExportAnchor] = useState<null | HTMLElement>(null);
+  const [exporting, setExporting] = useState(false);
+
+  const handleExport = useCallback(
+    async (format: 'xlsx' | 'csv') => {
+      setExportAnchor(null);
+      setExporting(true);
+      try {
+        const params = new URLSearchParams();
+        if (filters.status) params.set('status', filters.status);
+        if (filters.priority) params.set('priority', filters.priority);
+        if (filters.bucketId) params.set('bucketId', filters.bucketId);
+        if (filters.analystId) params.set('analystId', filters.analystId);
+
+        const token = localStorage.getItem('token');
+        const url = `/api/export/${format}?${params.toString()}`;
+
+        const response = await fetch(url, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!response.ok) throw new Error('Erro no export');
+
+        const blob = await response.blob();
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = downloadUrl;
+        a.download = `tarefas_${new Date().toISOString().slice(0, 10)}.${format}`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(downloadUrl);
+
+        setSnackbar({ open: true, message: 'Arquivo exportado com sucesso!', severity: 'success' });
+      } catch {
+        setSnackbar({ open: true, message: 'Erro ao exportar arquivo.', severity: 'error' });
+      } finally {
+        setExporting(false);
+      }
+    },
+    [filters],
+  );
+
   return (
     <Box>
       {/* Page header */}
@@ -99,13 +150,37 @@ export default function TaskListPage() {
         sx={{ mb: 3 }}
       >
         <Typography variant="h4">Tarefas</Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={handleNewTask}
-        >
-          Nova Tarefa
-        </Button>
+        <Stack direction="row" spacing={1}>
+          <Button
+            variant="outlined"
+            startIcon={<FileDownloadIcon />}
+            onClick={(e) => setExportAnchor(e.currentTarget)}
+            disabled={exporting}
+          >
+            {exporting ? 'Exportando...' : 'Exportar'}
+          </Button>
+          <Menu
+            anchorEl={exportAnchor}
+            open={Boolean(exportAnchor)}
+            onClose={() => setExportAnchor(null)}
+          >
+            <MenuItem onClick={() => handleExport('xlsx')}>
+              <ListItemIcon><TableChartIcon fontSize="small" /></ListItemIcon>
+              <ListItemText>Excel (.xlsx)</ListItemText>
+            </MenuItem>
+            <MenuItem onClick={() => handleExport('csv')}>
+              <ListItemIcon><DescriptionIcon fontSize="small" /></ListItemIcon>
+              <ListItemText>CSV (.csv)</ListItemText>
+            </MenuItem>
+          </Menu>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={handleNewTask}
+          >
+            Nova Tarefa
+          </Button>
+        </Stack>
       </Stack>
 
       {/* Filters */}
