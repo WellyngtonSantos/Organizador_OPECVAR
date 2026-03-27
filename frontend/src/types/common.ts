@@ -18,4 +18,6 @@ export interface FilterParams {
   bucketId?: string;
   labelId?: string;
   search?: string;
+  page?: number;
+  pageSize?: number;
 }

@@ -84,11 +84,13 @@ export interface CreateTaskInput {
   name: string;
   analystId: string;
   receivedDate: string;
-  startDate?: string;
-  estimatedCompletionDate?: string;
-  estimatedHours?: number;
-  bucketId?: string;
+  startDate?: string | null;
+  estimatedCompletionDate?: string | null;
+  estimatedHours?: number | null;
+  bucketId?: string | null;
   priority?: Priority;
+  status?: Status;
+  queueOrder?: number;
   labelIds?: string[];
 }
 
@@ -104,5 +106,6 @@ export interface UpdateTaskInput {
   bucketId?: string | null;
   priority?: Priority;
   status?: Status;
+  queueOrder?: number;
   labelIds?: string[];
 }
