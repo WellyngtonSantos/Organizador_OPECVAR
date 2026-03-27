@@ -6,6 +6,7 @@ import labelRoutes from './label.routes';
 import userRoutes from './user.routes';
 import timerRoutes from './timer.routes';
 import queueRoutes from './queue.routes';
+import dashboardRoutes from './dashboard.routes';
 
 const router = Router();
 
@@ -20,5 +21,6 @@ router.use('/labels', labelRoutes);
 router.use('/users', userRoutes);
 router.use('/timers', timerRoutes);
 router.use('/queues', queueRoutes);
+router.use('/dashboard', dashboardRoutes);
 
 export default router;

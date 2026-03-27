@@ -7,17 +7,9 @@ import AppShell from './components/layout/AppShell';
 import LoginPage from './pages/LoginPage';
 import TaskListPage from './pages/TaskListPage';
 import QueuePage from './pages/QueuePage';
+import DashboardPage from './pages/DashboardPage';
 
 // Placeholder pages - will be implemented in later phases
-function DashboardPage() {
-  return (
-    <div>
-      <h2>Dashboard</h2>
-      <p>Dashboard semanal sera implementado na Fase 7.</p>
-    </div>
-  );
-}
-
 function SettingsPage() {
   return (
     <div>

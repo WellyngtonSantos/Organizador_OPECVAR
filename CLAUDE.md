@@ -32,6 +32,7 @@ Organizador_OPECVAR/
 │       ├── components/
 │       │   ├── auth/          # LoginForm.tsx, ProtectedRoute.tsx
 │       │   ├── layout/        # AppShell.tsx, TopBar.tsx, Sidebar.tsx
+│       │   ├── dashboard/      # WeekSelector, SummaryCards, Charts, OverdueAlerts, EfficiencyCard
 │       │   └── common/        # StatusChip.tsx, PriorityChip.tsx, ConfirmDialog.tsx
 │       └── utils/             # dateUtils.ts, formatters.ts
 ├── package.json               # Workspaces root
@@ -56,12 +57,12 @@ User, Bucket, Label, Task, TaskLabel, TaskNote, TaskHistory, TimerSession
 | 4 | Tela Principal (TaskDataGrid, filtros, destaque visual, TaskDetailPanel) | Concluida | 7b89873 |
 | 5 | Timer e Horas (start/stop timer, useTimer, TaskTimer) | Concluida | - |
 | 6 | Fila Drag-and-Drop por Analista (reorder, AnalystQueue, QueueCard, @dnd-kit) | Concluida | - |
-| 7 | Dashboard Semanal (agregacoes, WeekSelector, SummaryCards, Recharts) | Pendente | - |
+| 7 | Dashboard Semanal (agregacoes, WeekSelector, SummaryCards, Recharts) | Concluida | - |
 | 8 | Export + Polish (CSV/XLSX, SettingsPage, dark mode toggle, loading states) | Pendente | - |
 
-## Proxima fase: 7 - Dashboard Semanal
-Backend: agregacoes semanais
-Frontend: WeekSelector, SummaryCards, graficos Recharts
+## Proxima fase: 8 - Export + Polish
+Backend: export CSV/XLSX
+Frontend: SettingsPage, dark mode toggle, loading states
 
 ## Comandos uteis
 ```bash
