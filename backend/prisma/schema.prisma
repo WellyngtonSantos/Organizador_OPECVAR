@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ANALYST
+  MANAGER
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum Status {
+  NOT_STARTED
+  IN_PROGRESS
+  STAND_BY
+  COMPLETED
+  CANCELED
+}
+
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  email         String    @unique
+  passwordHash  String
+  role          Role      @default(ANALYST)
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  assignedTasks Task[]    @relation("AssignedAnalyst")
+  createdTasks  Task[]    @relation("CreatedBy")
+  taskNotes     TaskNote[]
+  taskHistory   TaskHistory[]
+  timerSessions TimerSession[]
+}
+
+model Bucket {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  color     String?
+  createdAt DateTime @default(now())
+  tasks     Task[]
+}
+
+model Label {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  color     String?
+  createdAt DateTime @default(now())
+  tasks     TaskLabel[]
+}
+
+model Task {
+  id                      String    @id @default(uuid())
+  name                    String
+  analystId               String
+  analyst                 User      @relation("AssignedAnalyst", fields: [analystId], references: [id])
+  createdById             String
+  createdBy               User      @relation("CreatedBy", fields: [createdById], references: [id])
+  receivedDate            DateTime
+  startDate               DateTime?
+  estimatedCompletionDate DateTime?
+  actualCompletionDate    DateTime?
+  estimatedHours          Float?
+  actualHours             Float     @default(0)
+  bucketId                String?
+  bucket                  Bucket?   @relation(fields: [bucketId], references: [id])
+  priority                Priority  @default(MEDIUM)
+  status                  Status    @default(NOT_STARTED)
+  queueOrder              Int       @default(0)
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+
+  labels                  TaskLabel[]
+  notes                   TaskNote[]
+  history                 TaskHistory[]
+  timerSessions           TimerSession[]
+}
+
+model TaskLabel {
+  taskId  String
+  task    Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  labelId String
+  label   Label  @relation(fields: [labelId], references: [id], onDelete: Cascade)
+
+  @@id([taskId, labelId])
+}
+
+model TaskNote {
+  id        String   @id @default(uuid())
+  taskId    String
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model TaskHistory {
+  id        String   @id @default(uuid())
+  taskId    String
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  field     String
+  oldValue  String?
+  newValue  String?
+  changedAt DateTime @default(now())
+}
+
+model TimerSession {
+  id        String    @id @default(uuid())
+  taskId    String
+  task      Task      @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  startedAt DateTime  @default(now())
+  stoppedAt DateTime?
+  hours     Float?
+}
