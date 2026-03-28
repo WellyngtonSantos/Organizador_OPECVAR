@@ -19,25 +19,25 @@ export default function AdminPage() {
       <Grid container spacing={4}>
         <Grid item xs={12} md={6}>
           <ItemManager
-            title="Buckets"
+            title="Tipos de Tarefa"
             items={buckets}
             loading={bucketsLoading}
             onCreate={createBucket}
             onUpdate={updateBucket}
             onDelete={deleteBucket}
-            deleteErrorMessage="Erro ao excluir bucket. Remova as tarefas associadas primeiro."
+            deleteErrorMessage="Erro ao excluir tipo de tarefa. Remova as tarefas associadas primeiro."
           />
         </Grid>
 
         <Grid item xs={12} md={6}>
           <ItemManager
-            title="Etiquetas"
+            title="Setores Solicitantes"
             items={labels}
             loading={labelsLoading}
             onCreate={createLabel}
             onUpdate={updateLabel}
             onDelete={deleteLabel}
-            deleteErrorMessage="Erro ao excluir etiqueta. Remova as tarefas associadas primeiro."
+            deleteErrorMessage="Erro ao excluir setor solicitante. Remova as tarefas associadas primeiro."
           />
         </Grid>
       </Grid>

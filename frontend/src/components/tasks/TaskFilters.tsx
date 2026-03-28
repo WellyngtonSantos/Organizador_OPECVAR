@@ -119,10 +119,10 @@ export default function TaskFilters({
       </FormControl>
 
       <FormControl size="small" sx={{ minWidth: 150 }}>
-        <InputLabel>Bucket</InputLabel>
+        <InputLabel>Tipo</InputLabel>
         <Select
           value={filters.bucketId ?? ''}
-          label="Bucket"
+          label="Tipo"
           onChange={handleSelectChange('bucketId')}
         >
           <MenuItem value="">Todos</MenuItem>

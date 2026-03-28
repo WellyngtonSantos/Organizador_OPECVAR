@@ -206,7 +206,7 @@ export default function ImportDialog({ open, onClose, onImported }: ImportDialog
                 <Box>
                   <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
                     <FolderIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 0.5 }} />
-                    Buckets criados: {result.createdBuckets.join(', ')}
+                    Tipos criados: {result.createdBuckets.join(', ')}
                   </Typography>
                 </Box>
               )}
@@ -215,7 +215,7 @@ export default function ImportDialog({ open, onClose, onImported }: ImportDialog
                 <Box>
                   <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
                     <LabelIcon fontSize="small" sx={{ verticalAlign: 'middle', mr: 0.5 }} />
-                    Etiquetas criadas: {result.createdLabels.join(', ')}
+                    Setores criados: {result.createdLabels.join(', ')}
                   </Typography>
                 </Box>
               )}
@@ -248,7 +248,7 @@ export default function ImportDialog({ open, onClose, onImported }: ImportDialog
           {!result && !uploading && (
             <Alert severity="info" variant="outlined">
               <Typography variant="caption">
-                <strong>Mapeamento automatico:</strong> Buckets, etiquetas e usuarios serao criados
+                <strong>Mapeamento automatico:</strong> Tipos de tarefa, setores solicitantes e usuarios serao criados
                 automaticamente se nao existirem no sistema. Usuarios criados recebem senha padrao "mudar123".
               </Typography>
             </Alert>

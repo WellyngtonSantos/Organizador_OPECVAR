@@ -65,11 +65,11 @@ function getColumns(activeTimerTaskId?: string | null): GridColDef[] {
     headerName: 'Analista',
     flex: 1,
     minWidth: 120,
-    valueGetter: (_value: unknown, row: Task) => row.analyst?.name ?? '-',
+    valueGetter: (_value: unknown, row: Task) => row.analyst?.name ?? 'Nao atribuido',
   },
   {
     field: 'bucket',
-    headerName: 'Bucket',
+    headerName: 'Tipo',
     flex: 1,
     minWidth: 120,
     renderCell: (params: GridRenderCellParams<Task>) => {

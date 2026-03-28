@@ -58,10 +58,10 @@ export interface Task {
   id: string;
   name: string;
   description: string | null;
-  analystId: string;
-  analyst: { id: string; name: string };
-  createdById: string;
-  createdBy: { id: string; name: string };
+  analystId: string | null;
+  analyst: { id: string; name: string } | null;
+  createdById: string | null;
+  createdBy: { id: string; name: string } | null;
   receivedDate: string;
   startDate: string | null;
   estimatedCompletionDate: string | null;
@@ -84,8 +84,8 @@ export interface Task {
 export interface CreateTaskInput {
   name: string;
   description?: string | null;
-  analystId: string;
-  receivedDate: string;
+  analystId?: string | null;
+  receivedDate?: string | null;
   startDate?: string | null;
   estimatedCompletionDate?: string | null;
   estimatedHours?: number | null;

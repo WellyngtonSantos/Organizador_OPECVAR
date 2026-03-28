@@ -18,7 +18,7 @@ export default function BucketDistributionChart({ data }: BucketDistributionChar
   return (
     <Paper sx={{ p: 2.5, borderRadius: 2 }}>
       <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 2 }}>
-        Distribuicao por Bucket
+        Distribuicao por Tipo de Tarefa
       </Typography>
       <ResponsiveContainer width="100%" height={280}>
         <PieChart>

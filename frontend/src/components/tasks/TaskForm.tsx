@@ -68,14 +68,14 @@ export default function TaskForm({
     labelIds: [],
   });
 
-  const [errors, setErrors] = useState<{ name?: string; analystId?: string }>({});
+  const [errors, setErrors] = useState<{ name?: string }>({});
 
   useEffect(() => {
     if (mode === 'edit' && task) {
       setForm({
         name: task.name,
         description: task.description ?? '',
-        analystId: task.analystId,
+        analystId: task.analystId ?? '',
         bucketId: task.bucketId ?? '',
         priority: task.priority,
         status: task.status,
@@ -106,9 +106,8 @@ export default function TaskForm({
   };
 
   const validate = (): boolean => {
-    const newErrors: { name?: string; analystId?: string } = {};
+    const newErrors: { name?: string } = {};
     if (!form.name.trim()) newErrors.name = 'Nome e obrigatorio';
-    if (!form.analystId) newErrors.analystId = 'Analista e obrigatorio';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -120,7 +119,7 @@ export default function TaskForm({
     const data: CreateTaskInput | UpdateTaskInput = {
       name: form.name.trim(),
       description: form.description.trim() || null,
-      analystId: form.analystId,
+      analystId: form.analystId || null,
       bucketId: form.bucketId || null,
       priority: form.priority,
       status: form.status,
@@ -162,13 +161,14 @@ export default function TaskForm({
           placeholder="Anotacoes, detalhes, instrucoes..."
         />
 
-        <FormControl size="small" fullWidth required error={!!errors.analystId}>
+        <FormControl size="small" fullWidth>
           <InputLabel>Analista</InputLabel>
           <Select
             value={form.analystId}
             label="Analista"
             onChange={handleSelectChange('analystId')}
           >
+            <MenuItem value="">Nao atribuido</MenuItem>
             {analysts.map((a) => (
               <MenuItem key={a.id} value={a.id}>
                 {a.name}
@@ -178,10 +178,10 @@ export default function TaskForm({
         </FormControl>
 
         <FormControl size="small" fullWidth>
-          <InputLabel>Bucket</InputLabel>
+          <InputLabel>Tipo de Tarefa</InputLabel>
           <Select
             value={form.bucketId}
-            label="Bucket"
+            label="Tipo de Tarefa"
             onChange={handleSelectChange('bucketId')}
           >
             <MenuItem value="">Nenhum</MenuItem>
@@ -293,7 +293,7 @@ export default function TaskForm({
             })
           }
           renderInput={(params) => (
-            <TextField {...params} label="Etiquetas" size="small" />
+            <TextField {...params} label="Setor Solicitante" size="small" />
           )}
           size="small"
         />

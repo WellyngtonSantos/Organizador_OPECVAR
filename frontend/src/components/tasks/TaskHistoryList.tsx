@@ -19,7 +19,7 @@ interface TaskHistoryListProps {
 const fieldLabels: Record<string, string> = {
   name: 'Nome',
   analystId: 'Analista',
-  bucketId: 'Bucket',
+  bucketId: 'Tipo de Tarefa',
   priority: 'Prioridade',
   status: 'Status',
   receivedDate: 'Data de Recebimento',
@@ -29,7 +29,7 @@ const fieldLabels: Record<string, string> = {
   estimatedHours: 'Horas Estimadas',
   actualHours: 'Horas Reais',
   queueOrder: 'Ordem na Fila',
-  labelIds: 'Etiquetas',
+  labelIds: 'Setor Solicitante',
   creation: 'Criacao',
 };
 

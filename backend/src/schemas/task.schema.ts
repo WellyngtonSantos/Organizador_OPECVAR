@@ -3,8 +3,8 @@ import { z } from 'zod';
 export const createTaskSchema = z.object({
   name: z.string().min(1, 'Nome da tarefa é obrigatório'),
   description: z.string().optional().nullable(),
-  analystId: z.string().uuid('ID do analista inválido'),
-  receivedDate: z.string().datetime({ message: 'Data de recebimento inválida' }),
+  analystId: z.string().uuid('ID do analista inválido').optional().nullable(),
+  receivedDate: z.string().datetime({ message: 'Data de recebimento inválida' }).optional().nullable(),
   startDate: z.string().datetime({ message: 'Data de início inválida' }).optional().nullable(),
   estimatedCompletionDate: z.string().datetime({ message: 'Data estimada inválida' }).optional().nullable(),
   estimatedHours: z.number().positive('Horas estimadas devem ser positivas').optional().nullable(),

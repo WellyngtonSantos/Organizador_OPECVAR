@@ -298,7 +298,7 @@ export class DashboardService {
       return {
         taskId: task.id,
         taskName: task.name,
-        analyst: task.analyst.name,
+        analyst: task.analyst?.name ?? 'Nao atribuido',
         daysOverdue,
       };
     });

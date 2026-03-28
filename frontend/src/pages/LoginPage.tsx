@@ -2,6 +2,10 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
+import AddTaskIcon from '@mui/icons-material/AddTask';
 import LoginForm from '../components/auth/LoginForm';
 import { useAuth } from '../context/AuthContext';
 
@@ -45,6 +49,22 @@ export default function LoginPage() {
         }}
       >
         <LoginForm onLogin={handleLogin} />
+
+        <Divider sx={{ width: '100%', my: 2 }}>
+          <Typography variant="caption" color="text.secondary">
+            ou
+          </Typography>
+        </Divider>
+
+        <Button
+          variant="outlined"
+          fullWidth
+          startIcon={<AddTaskIcon />}
+          onClick={() => navigate('/request')}
+          sx={{ textTransform: 'none' }}
+        >
+          Solicitar nova tarefa (acesso externo)
+        </Button>
       </Paper>
     </Box>
   );

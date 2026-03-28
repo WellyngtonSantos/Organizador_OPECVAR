@@ -149,16 +149,17 @@ export class TaskService {
     return task;
   }
 
-  async create(data: CreateTaskInput, userId: string) {
+  async create(data: CreateTaskInput, userId?: string) {
     const { labelIds, ...taskData } = data;
 
     const task = await prisma.task.create({
       data: {
         ...taskData,
-        receivedDate: new Date(taskData.receivedDate),
+        receivedDate: taskData.receivedDate ? new Date(taskData.receivedDate) : new Date(),
         startDate: taskData.startDate ? new Date(taskData.startDate) : null,
         estimatedCompletionDate: taskData.estimatedCompletionDate ? new Date(taskData.estimatedCompletionDate) : null,
-        createdById: userId,
+        createdById: userId ?? null,
+        analystId: taskData.analystId ?? null,
         labels: labelIds && labelIds.length > 0
           ? {
               create: labelIds.map((labelId) => ({ labelId })),
@@ -182,7 +183,9 @@ export class TaskService {
       },
     });
 
-    await historyService.logCreation(task.id, userId);
+    if (userId) {
+      await historyService.logCreation(task.id, userId);
+    }
 
     return task;
   }

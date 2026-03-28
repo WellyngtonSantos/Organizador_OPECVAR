@@ -9,6 +9,7 @@ import queueRoutes from './queue.routes';
 import dashboardRoutes from './dashboard.routes';
 import exportRoutes from './export.routes';
 import importRoutes from './import.routes';
+import publicRoutes from './public.routes';
 
 const router = Router();
 
@@ -26,5 +27,6 @@ router.use('/queues', queueRoutes);
 router.use('/dashboard', dashboardRoutes);
 router.use('/export', exportRoutes);
 router.use('/import', importRoutes);
+router.use('/public', publicRoutes);
 
 export default router;

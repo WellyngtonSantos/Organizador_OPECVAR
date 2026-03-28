@@ -81,7 +81,7 @@ export class ExportService {
       sheet.addRow({
         name: task.name,
         description: task.description ?? '',
-        analyst: task.analyst.name,
+        analyst: task.analyst?.name ?? 'Nao atribuido',
         bucket: task.bucket?.name ?? '-',
         priority: PRIORITY_LABELS[task.priority] ?? task.priority,
         status: STATUS_LABELS[task.status] ?? task.status,
@@ -132,7 +132,7 @@ export class ExportService {
     const rows = tasks.map((task) => [
       escapeCsv(task.name),
       escapeCsv(task.description ?? ''),
-      escapeCsv(task.analyst.name),
+      escapeCsv(task.analyst?.name ?? 'Nao atribuido'),
       escapeCsv(task.bucket?.name ?? '-'),
       PRIORITY_LABELS[task.priority] ?? task.priority,
       STATUS_LABELS[task.status] ?? task.status,
