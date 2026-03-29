@@ -15,21 +15,34 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleIcon from '@mui/icons-material/People';
 import TuneIcon from '@mui/icons-material/Tune';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { useAuth } from '../../context/AuthContext';
 
 const DRAWER_WIDTH = 260;
 
-const menuItems = [
+interface MenuItem {
+  text: string;
+  icon: React.ReactNode;
+  path: string;
+  managerOnly?: boolean;
+}
+
+const menuItems: MenuItem[] = [
   { text: 'Tarefas', icon: <AssignmentIcon />, path: '/tasks' },
   { text: 'Fila', icon: <ViewListIcon />, path: '/queue' },
   { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
-  { text: 'Usuarios', icon: <PeopleIcon />, path: '/users' },
-  { text: 'Personalizacao', icon: <TuneIcon />, path: '/admin' },
+  { text: 'Usuarios', icon: <PeopleIcon />, path: '/users', managerOnly: true },
+  { text: 'Personalizacao', icon: <TuneIcon />, path: '/admin', managerOnly: true },
   { text: 'Configuracoes', icon: <SettingsIcon />, path: '/settings' },
 ];
 
 export default function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const visibleItems = menuItems.filter(
+    (item) => !item.managerOnly || user?.role === 'MANAGER',
+  );
 
   return (
     <Drawer
@@ -75,7 +88,7 @@ export default function Sidebar() {
       </Toolbar>
       <Divider />
       <List sx={{ px: 1, pt: 1 }}>
-        {menuItems.map((item) => (
+        {visibleItems.map((item) => (
           <ListItemButton
             key={item.path}
             onClick={() => navigate(item.path)}

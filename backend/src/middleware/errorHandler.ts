@@ -31,8 +31,10 @@ export function errorHandler(err: Error, req: Request, res: Response, _next: Nex
     }
   }
 
+  // Never leak internal error details to the client
+  console.error('Internal error details:', err.stack || err.message);
   res.status(500).json({
     error: 'Internal Server Error',
-    message: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong',
+    message: 'Ocorreu um erro inesperado. Tente novamente.',
   });
 }

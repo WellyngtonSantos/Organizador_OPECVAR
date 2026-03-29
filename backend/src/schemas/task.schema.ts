@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 export const createTaskSchema = z.object({
-  name: z.string().min(1, 'Nome da tarefa é obrigatório'),
-  description: z.string().optional().nullable(),
+  name: z.string().min(1, 'Nome da tarefa é obrigatório').max(255, 'Nome máximo 255 caracteres'),
+  description: z.string().max(5000, 'Descrição máximo 5000 caracteres').optional().nullable(),
   analystId: z.string().uuid('ID do analista inválido').optional().nullable(),
   receivedDate: z.string().datetime({ message: 'Data de recebimento inválida' }).optional().nullable(),
   startDate: z.string().datetime({ message: 'Data de início inválida' }).optional().nullable(),
@@ -16,8 +16,8 @@ export const createTaskSchema = z.object({
 });
 
 export const updateTaskSchema = z.object({
-  name: z.string().min(1, 'Nome da tarefa é obrigatório').optional(),
-  description: z.string().optional().nullable(),
+  name: z.string().min(1, 'Nome da tarefa é obrigatório').max(255, 'Nome máximo 255 caracteres').optional(),
+  description: z.string().max(5000, 'Descrição máximo 5000 caracteres').optional().nullable(),
   analystId: z.string().uuid('ID do analista inválido').optional(),
   receivedDate: z.string().datetime({ message: 'Data de recebimento inválida' }).optional(),
   startDate: z.string().datetime({ message: 'Data de início inválida' }).optional().nullable(),

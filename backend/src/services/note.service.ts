@@ -36,10 +36,14 @@ export class NoteService {
     });
   }
 
-  async delete(id: string) {
+  async delete(id: string, userId: string, userRole?: string) {
     const note = await prisma.taskNote.findUnique({ where: { id } });
     if (!note) {
       throw new Error('NOTE_NOT_FOUND');
+    }
+    // Only the author or a MANAGER can delete a note
+    if (userRole !== 'MANAGER' && note.authorId !== userId) {
+      throw new Error('UNAUTHORIZED_ACCESS');
     }
     return prisma.taskNote.delete({ where: { id } });
   }

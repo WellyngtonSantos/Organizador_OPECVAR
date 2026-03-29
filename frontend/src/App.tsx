@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/auth/ProtectedRoute';
+import ProtectedRoute, { ManagerRoute } from './components/auth/ProtectedRoute';
 import AppShell from './components/layout/AppShell';
 import LoginPage from './pages/LoginPage';
 import TaskListPage from './pages/TaskListPage';
@@ -26,9 +26,11 @@ export default function App() {
                 <Route path="/tasks" element={<TaskListPage />} />
                 <Route path="/queue" element={<QueuePage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/users" element={<UsersPage />} />
-                <Route path="/admin" element={<AdminPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
+                <Route element={<ManagerRoute />}>
+                  <Route path="/users" element={<UsersPage />} />
+                  <Route path="/admin" element={<AdminPage />} />
+                </Route>
                 <Route path="/" element={<Navigate to="/tasks" replace />} />
               </Route>
             </Route>

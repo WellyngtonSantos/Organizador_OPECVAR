@@ -29,11 +29,15 @@ export class TaskController {
 
   async getById(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      const task = await taskService.findById(req.params.id);
+      const task = await taskService.findById(req.params.id, req.user!.id, req.user!.role);
       res.json({ task });
     } catch (error: any) {
       if (error.message === 'TASK_NOT_FOUND') {
         res.status(404).json({ error: 'Not Found', message: 'Tarefa não encontrada' });
+        return;
+      }
+      if (error.message === 'UNAUTHORIZED_ACCESS') {
+        res.status(403).json({ error: 'Forbidden', message: 'Sem permissão para acessar esta tarefa' });
         return;
       }
       next(error);
@@ -53,11 +57,15 @@ export class TaskController {
   async update(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const data = updateTaskSchema.parse(req.body);
-      const task = await taskService.update(req.params.id, data, req.user!.id);
+      const task = await taskService.update(req.params.id, data, req.user!.id, req.user!.role);
       res.json({ task });
     } catch (error: any) {
       if (error.message === 'TASK_NOT_FOUND') {
         res.status(404).json({ error: 'Not Found', message: 'Tarefa não encontrada' });
+        return;
+      }
+      if (error.message === 'UNAUTHORIZED_ACCESS') {
+        res.status(403).json({ error: 'Forbidden', message: 'Sem permissão para modificar esta tarefa' });
         return;
       }
       next(error);
@@ -66,11 +74,15 @@ export class TaskController {
 
   async delete(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      await taskService.delete(req.params.id);
+      await taskService.delete(req.params.id, req.user!.id, req.user!.role);
       res.status(204).send();
     } catch (error: any) {
       if (error.message === 'TASK_NOT_FOUND') {
         res.status(404).json({ error: 'Not Found', message: 'Tarefa não encontrada' });
+        return;
+      }
+      if (error.message === 'UNAUTHORIZED_ACCESS') {
+        res.status(403).json({ error: 'Forbidden', message: 'Sem permissão para excluir esta tarefa' });
         return;
       }
       next(error);
@@ -112,11 +124,15 @@ export class TaskController {
 
   async deleteNote(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      await noteService.delete(req.params.noteId);
+      await noteService.delete(req.params.noteId, req.user!.id, req.user!.role);
       res.status(204).send();
     } catch (error: any) {
       if (error.message === 'NOTE_NOT_FOUND') {
         res.status(404).json({ error: 'Not Found', message: 'Nota não encontrada' });
+        return;
+      }
+      if (error.message === 'UNAUTHORIZED_ACCESS') {
+        res.status(403).json({ error: 'Forbidden', message: 'Sem permissão para excluir esta nota' });
         return;
       }
       next(error);

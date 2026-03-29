@@ -21,3 +21,21 @@ export default function ProtectedRoute() {
 
   return <Outlet />;
 }
+
+export function ManagerRoute() {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (!user || user.role !== 'MANAGER') {
+    return <Navigate to="/tasks" replace />;
+  }
+
+  return <Outlet />;
+}

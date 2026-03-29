@@ -16,8 +16,8 @@ interface TaskFilters {
 
 export class TaskService {
   async findAll(filters: TaskFilters = {}) {
-    const page = filters.page || 1;
-    const limit = filters.limit || 20;
+    const page = Math.max(1, filters.page || 1);
+    const limit = Math.min(Math.max(1, filters.limit || 20), 100); // Cap at 100
     const skip = (page - 1) * limit;
 
     const where: any = {};
@@ -91,7 +91,7 @@ export class TaskService {
     };
   }
 
-  async findById(id: string) {
+  async findById(id: string, userId?: string, userRole?: string) {
     const task = await prisma.task.findUnique({
       where: { id },
       include: {
@@ -146,6 +146,11 @@ export class TaskService {
       throw new Error('TASK_NOT_FOUND');
     }
 
+    // ANALYST can only view tasks assigned to them or created by them
+    if (userId && userRole === 'ANALYST' && task.analystId !== userId && task.createdById !== userId) {
+      throw new Error('UNAUTHORIZED_ACCESS');
+    }
+
     return task;
   }
 
@@ -190,10 +195,15 @@ export class TaskService {
     return task;
   }
 
-  async update(id: string, data: UpdateTaskInput, userId: string) {
+  async update(id: string, data: UpdateTaskInput, userId: string, userRole?: string) {
     const existing = await prisma.task.findUnique({ where: { id } });
     if (!existing) {
       throw new Error('TASK_NOT_FOUND');
+    }
+
+    // ANALYST can only update tasks assigned to them or created by them
+    if (userRole === 'ANALYST' && existing.analystId !== userId && existing.createdById !== userId) {
+      throw new Error('UNAUTHORIZED_ACCESS');
     }
 
     const { labelIds, ...updateFields } = data;
@@ -297,10 +307,15 @@ export class TaskService {
     return { updatedCount: tasks.length };
   }
 
-  async delete(id: string) {
+  async delete(id: string, userId?: string, userRole?: string) {
     const task = await prisma.task.findUnique({ where: { id } });
     if (!task) {
       throw new Error('TASK_NOT_FOUND');
+    }
+
+    // Only MANAGER can delete tasks
+    if (userRole === 'ANALYST') {
+      throw new Error('UNAUTHORIZED_ACCESS');
     }
 
     return prisma.task.delete({ where: { id } });

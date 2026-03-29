@@ -7,7 +7,13 @@ export class DashboardController {
     try {
       const { weekStart, analystId } = req.query;
       const weekStartStr = (weekStart as string) || new Date().toISOString();
-      const analystIdStr = analystId as string | undefined;
+      let analystIdStr = analystId as string | undefined;
+
+      // ANALYST can only view their own dashboard data
+      if (req.user!.role === 'ANALYST') {
+        analystIdStr = req.user!.id;
+      }
+
       const dashboard = await dashboardService.getWeeklyDashboard(weekStartStr, analystIdStr);
       res.json({ dashboard });
     } catch (error) {
