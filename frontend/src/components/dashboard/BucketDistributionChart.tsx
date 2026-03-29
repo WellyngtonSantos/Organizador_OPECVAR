@@ -1,6 +1,7 @@
 import React from 'react';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material/styles';
 import {
   PieChart,
   Pie,
@@ -15,6 +16,9 @@ interface BucketDistributionChartProps {
 }
 
 export default function BucketDistributionChart({ data }: BucketDistributionChartProps) {
+  const theme = useTheme();
+  const labelColor = theme.palette.text.primary;
+
   return (
     <Paper sx={{ p: 2.5, borderRadius: 2 }}>
       <Typography variant="subtitle1" fontWeight={600} sx={{ mb: 2 }}>
@@ -30,6 +34,7 @@ export default function BucketDistributionChart({ data }: BucketDistributionChar
             cy="50%"
             outerRadius={100}
             label={({ bucket, count }) => `${bucket}: ${count}`}
+            labelLine={{ stroke: labelColor }}
           >
             {data.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={entry.color} />

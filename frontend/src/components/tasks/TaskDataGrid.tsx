@@ -1,5 +1,6 @@
 import React from 'react';
 import Box from '@mui/material/Box';
+import { useTheme } from '@mui/material/styles';
 import {
   DataGrid,
   GridColDef,
@@ -146,6 +147,9 @@ export default function TaskDataGrid({
   onRowClick,
   activeTimerTaskId,
 }: TaskDataGridProps) {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+
   const handlePaginationModelChange = (model: GridPaginationModel) => {
     onPageChange(model.page + 1, model.pageSize);
   };
@@ -183,12 +187,14 @@ export default function TaskDataGrid({
           bgcolor: 'background.paper',
           borderRadius: 2,
           '& .row-overdue': {
-            backgroundColor: '#FFEBEE',
-            '&:hover': { backgroundColor: '#FFCDD2' },
+            backgroundColor: isDark ? 'rgba(211, 47, 47, 0.2)' : '#FFEBEE',
+            color: isDark ? '#ffcdd2' : 'inherit',
+            '&:hover': { backgroundColor: isDark ? 'rgba(211, 47, 47, 0.3)' : '#FFCDD2' },
           },
           '& .row-near-deadline': {
-            backgroundColor: '#FFF8E1',
-            '&:hover': { backgroundColor: '#FFECB3' },
+            backgroundColor: isDark ? 'rgba(245, 124, 0, 0.2)' : '#FFF8E1',
+            color: isDark ? '#ffe0b2' : 'inherit',
+            '&:hover': { backgroundColor: isDark ? 'rgba(245, 124, 0, 0.3)' : '#FFECB3' },
           },
           '& .MuiDataGrid-row': {
             cursor: 'pointer',
