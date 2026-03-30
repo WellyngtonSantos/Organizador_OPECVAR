@@ -5,7 +5,7 @@ dotenv.config();
 
 const envSchema = z.object({
   DATABASE_URL: z.string().url(),
-  JWT_SECRET: z.string().min(8),
+  JWT_SECRET: z.string().min(32, 'JWT_SECRET deve ter ao menos 32 caracteres para producao'),
   PORT: z.string().default('3001').transform(Number),
   JWT_EXPIRES_IN: z.string().default('7d'),
   NODE_ENV: z.string().default('development'),

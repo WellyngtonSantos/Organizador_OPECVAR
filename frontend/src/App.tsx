@@ -11,6 +11,7 @@ import DashboardPage from './pages/DashboardPage';
 import SettingsPage from './pages/SettingsPage';
 import UsersPage from './pages/UsersPage';
 import AdminPage from './pages/AdminPage';
+import AuditLogPage from './pages/AuditLogPage';
 import ExternalRequestPage from './pages/ExternalRequestPage';
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
                 <Route element={<ManagerRoute />}>
                   <Route path="/users" element={<UsersPage />} />
                   <Route path="/admin" element={<AdminPage />} />
+                  <Route path="/audit-logs" element={<AuditLogPage />} />
                 </Route>
                 <Route path="/" element={<Navigate to="/tasks" replace />} />
               </Route>

@@ -1,9 +1,15 @@
 import { z } from 'zod';
 
+const passwordSchema = z.string()
+  .min(8, 'Senha deve ter ao menos 8 caracteres')
+  .max(128, 'Senha maximo 128 caracteres')
+  .regex(/[A-Z]/, 'Senha deve conter ao menos uma letra maiuscula')
+  .regex(/[0-9]/, 'Senha deve conter ao menos um numero');
+
 export const createUserSchema = z.object({
   name: z.string().min(2, 'Nome deve ter ao menos 2 caracteres'),
   email: z.string().email('Email invalido'),
-  password: z.string().min(6, 'Senha deve ter ao menos 6 caracteres'),
+  password: passwordSchema,
   role: z.enum(['ANALYST', 'MANAGER']).default('ANALYST'),
 });
 
@@ -15,7 +21,7 @@ export const updateUserSchema = z.object({
 });
 
 export const resetPasswordSchema = z.object({
-  password: z.string().min(6, 'Senha deve ter ao menos 6 caracteres'),
+  password: passwordSchema,
 });
 
 export type CreateUserInput = z.infer<typeof createUserSchema>;

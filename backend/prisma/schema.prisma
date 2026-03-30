@@ -42,6 +42,7 @@ model User {
   taskNotes     TaskNote[]
   taskHistory   TaskHistory[]
   timerSessions TimerSession[]
+  auditLogs     AuditLog[]
 }
 
 model Bucket {
@@ -128,4 +129,34 @@ model TimerSession {
   startedAt DateTime  @default(now())
   stoppedAt DateTime?
   hours     Float?
+}
+
+enum AuditAction {
+  LOGIN_SUCCESS
+  LOGIN_FAILED
+  TOKEN_INVALID
+  TOKEN_EXPIRED
+  ACCESS_DENIED
+  REGISTER
+  PASSWORD_RESET
+  USER_CREATED
+  USER_DELETED
+  ACCOUNT_LOCKED
+}
+
+model AuditLog {
+  id        String      @id @default(uuid())
+  action    AuditAction
+  userId    String?
+  user      User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  email     String?
+  ipAddress String
+  userAgent String?
+  details   String?
+  createdAt DateTime    @default(now())
+
+  @@index([action])
+  @@index([createdAt])
+  @@index([userId])
+  @@index([ipAddress])
 }

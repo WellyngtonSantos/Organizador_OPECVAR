@@ -10,6 +10,7 @@ import dashboardRoutes from './dashboard.routes';
 import exportRoutes from './export.routes';
 import importRoutes from './import.routes';
 import publicRoutes from './public.routes';
+import auditRoutes from './audit.routes';
 
 const router = Router();
 
@@ -28,5 +29,6 @@ router.use('/dashboard', dashboardRoutes);
 router.use('/export', exportRoutes);
 router.use('/import', importRoutes);
 router.use('/public', publicRoutes);
+router.use('/audit-logs', auditRoutes);
 
 export default router;
