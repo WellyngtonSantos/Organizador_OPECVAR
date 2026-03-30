@@ -7,7 +7,22 @@
       "Bash(npx prisma:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(where pg_isready)",
+      "Bash(pg_isready)",
+      "Bash(where psql:*)",
+      "Bash(where docker:*)",
+      "Bash(docker --version)",
+      "Bash(export PATH=\"$PATH:/c/Program Files/PostgreSQL/18/bin\")",
+      "Bash(pg_isready -h localhost -p 5432)",
+      "Bash(PGPASSWORD=abcd1234 psql -U postgres -h localhost -p 5432 -c \"CREATE DATABASE opecvar;\")",
+      "Bash(find /c/Users/wellyngton.santos/Documents/Sistemas_Claude/Organizador_OPECVAR -name .env* -o -name *.env*)",
+      "Read(//tmp/**)",
+      "Bash(netstat -ano)",
+      "Bash(pkill -f \"tsx watch\")",
+      "Bash(pkill -f \"vite\")",
+      "Bash(pkill -f \"node.*index.ts\")",
+      "Bash(find /c/Users/wellyngton.santos/Documents/Sistemas_Claude/Organizador_OPECVAR -type f -name *.ts -o -name *.json -o -name .env*)"
     ]
   }
 }
