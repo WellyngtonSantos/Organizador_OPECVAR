@@ -15,7 +15,7 @@ Organizador_OPECVAR/
 ├── backend/
 │   ├── prisma/schema.prisma, seed.ts
 │   └── src/
-│       ├── index.ts          # Express app entry
+│       ├── index.ts          # Express app entry + serve frontend em prod
 │       ├── config/            # env.ts, database.ts (PrismaClient singleton)
 │       ├── middleware/        # auth.ts (JWT), errorHandler.ts, validate.ts (Zod)
 │       ├── routes/            # index.ts, auth.routes.ts
@@ -63,6 +63,11 @@ User, Bucket, Label, Task, TaskLabel, TaskNote, TaskHistory, TimerSession
 ## Status: Todas as fases concluidas!
 O projeto esta completo com todas as 8 fases implementadas.
 
+## Deploy / Producao
+- Em producao o backend serve o frontend estatico de `frontend/dist`
+- Rotas que nao comecam com `/api` retornam `index.html` (SPA fallback)
+- Basta buildar o frontend (`npm run build --workspace=frontend`) e iniciar o backend
+
 ## Comandos uteis
 ```bash
 # Instalar dependencias (na raiz)
@@ -79,6 +84,9 @@ npm run dev --workspace=backend
 
 # Rodar frontend (dev)
 npm run dev --workspace=frontend
+
+# Build frontend para producao
+npm run build --workspace=frontend
 ```
 
 ## Preferencias do usuario

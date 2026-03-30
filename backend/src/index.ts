@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import path from 'path';
 import { env } from './config/env';
 import routes from './routes';
 import { errorHandler } from './middleware/errorHandler';
@@ -79,6 +80,16 @@ app.use(express.urlencoded({ extended: false, limit: '1mb' }));
 app.use('/api', routes);
 
 app.use(errorHandler);
+
+// === Servir frontend em produção ===
+app.use(express.static(path.join(__dirname, '../../frontend/dist')));
+
+// Qualquer rota que não seja /api vai retornar o index.html (SPA)
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
+  }
+});
 
 app.listen(env.PORT, () => {
   console.log(`Server running on http://localhost:${env.PORT} [${env.NODE_ENV}]`);
