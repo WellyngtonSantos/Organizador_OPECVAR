@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Guia de Instalacao - Organizador OPECVAR em Rede Local</title>
+<style>
+  @media print {
+    body { margin: 0; }
+    .page-break { page-break-before: always; }
+    .no-print { display: none; }
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 30px;
+    color: #1a1a1a;
+    line-height: 1.6;
+    font-size: 14px;
+  }
+  h1 {
+    text-align: center;
+    color: #1565c0;
+    border-bottom: 3px solid #1565c0;
+    padding-bottom: 15px;
+    font-size: 26px;
+    margin-bottom: 5px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 30px;
+  }
+  h2 {
+    color: #1565c0;
+    border-left: 4px solid #1565c0;
+    padding-left: 12px;
+    margin-top: 35px;
+    font-size: 20px;
+  }
+  h3 {
+    color: #333;
+    margin-top: 20px;
+    font-size: 16px;
+  }
+  .step {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin: 15px 0;
+  }
+  .step-number {
+    display: inline-block;
+    background: #1565c0;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+  .step-title {
+    font-weight: bold;
+    font-size: 15px;
+    color: #1a1a1a;
+  }
+  code {
+    background: #e8eaf6;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 13px;
+  }
+  pre {
+    background: #263238;
+    color: #eeffff;
+    padding: 15px 18px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  pre .comment { color: #546e7a; }
+  pre .highlight { color: #ffcb6b; }
+  .warning {
+    background: #fff3e0;
+    border-left: 4px solid #ff9800;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .warning::before { content: "Atencao: "; font-weight: bold; color: #e65100; }
+  .info {
+    background: #e3f2fd;
+    border-left: 4px solid #2196f3;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .info::before { content: "Info: "; font-weight: bold; color: #1565c0; }
+  .success {
+    background: #e8f5e9;
+    border-left: 4px solid #4caf50;
+    padding: 12px 16px;
+    margin: 15px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .success::before { content: "Resultado: "; font-weight: bold; color: #2e7d32; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+  }
+  th, td {
+    border: 1px solid #dee2e6;
+    padding: 10px 14px;
+    text-align: left;
+  }
+  th {
+    background: #1565c0;
+    color: white;
+    font-weight: 600;
+  }
+  tr:nth-child(even) { background: #f8f9fa; }
+  .toc {
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px 25px;
+    margin: 20px 0;
+  }
+  .toc h3 { margin-top: 0; color: #1565c0; }
+  .toc ol { margin: 0; padding-left: 20px; }
+  .toc li { margin: 6px 0; }
+  .toc a { color: #1565c0; text-decoration: none; }
+  .print-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 12px 30px;
+    background: #1565c0;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .print-btn:hover { background: #0d47a1; }
+  .diagram {
+    background: #fafafa;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    margin: 15px 0;
+    font-family: 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+  }
+  .footer {
+    text-align: center;
+    color: #999;
+    font-size: 12px;
+    margin-top: 40px;
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+  }
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">Salvar como PDF (Ctrl+P)</button>
+
+<h1>Organizador OPECVAR</h1>
+<p class="subtitle">Guia de Instalacao e Deploy em Rede Local<br>Versao 1.0 &mdash; Abril 2026</p>
+
+<div class="toc">
+  <h3>Sumario</h3>
+  <ol>
+    <li><a href="#visao-geral">Visao Geral da Arquitetura</a></li>
+    <li><a href="#pre-requisitos">Pre-requisitos</a></li>
+    <li><a href="#postgresql">Instalar e Configurar o PostgreSQL</a></li>
+    <li><a href="#nodejs">Instalar o Node.js</a></li>
+    <li><a href="#projeto">Copiar o Projeto para a Maquina</a></li>
+    <li><a href="#dependencias">Instalar Dependencias</a></li>
+    <li><a href="#env">Configurar Variaveis de Ambiente</a></li>
+    <li><a href="#banco">Criar o Banco de Dados e Popular</a></li>
+    <li><a href="#build">Buildar o Frontend</a></li>
+    <li><a href="#iniciar">Iniciar o Servidor</a></li>
+    <li><a href="#firewall">Liberar no Firewall do Windows</a></li>
+    <li><a href="#acessar">Acessar de Outros Computadores</a></li>
+    <li><a href="#servico">Rodar como Servico (Opcional)</a></li>
+    <li><a href="#troubleshooting">Solucao de Problemas</a></li>
+    <li><a href="#credenciais">Credenciais Padrao</a></li>
+  </ol>
+</div>
+
+<!-- ===== VISAO GERAL ===== -->
+<h2 id="visao-geral">1. Visao Geral da Arquitetura</h2>
+
+<p>O Organizador OPECVAR roda como um <strong>unico servidor</strong> que serve tanto a API (backend) quanto a interface web (frontend). Qualquer computador na mesma rede acessa o sistema pelo navegador.</p>
+
+<div class="diagram">
+  <strong>Arquitetura em Rede Local</strong><br><br>
+  [PC Servidor - Windows]<br>
+  &boxur;&mdash; PostgreSQL (porta 5432)<br>
+  &boxur;&mdash; Node.js / Express (porta 3001)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&boxur;&mdash; API REST (/api/*)<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&boxur;&mdash; Frontend estatico (/*)<br><br>
+  &darr;&nbsp;&nbsp;&darr;&nbsp;&nbsp;&darr;<br><br>
+  [PC 1 - Navegador] &nbsp;&nbsp; [PC 2 - Navegador] &nbsp;&nbsp; [PC 3 - Navegador]<br>
+  http://192.168.x.x:3001
+</div>
+
+<!-- ===== PRE-REQUISITOS ===== -->
+<h2 id="pre-requisitos">2. Pre-requisitos</h2>
+
+<table>
+  <tr><th>Software</th><th>Versao Minima</th><th>Para que serve</th></tr>
+  <tr><td>Node.js</td><td>18.x ou superior</td><td>Executa o servidor backend</td></tr>
+  <tr><td>npm</td><td>9.x ou superior</td><td>Gerenciador de pacotes (vem com Node.js)</td></tr>
+  <tr><td>PostgreSQL</td><td>14.x ou superior</td><td>Banco de dados relacional</td></tr>
+  <tr><td>Git</td><td>Qualquer</td><td>Para clonar o repositorio (opcional)</td></tr>
+</table>
+
+<div class="info">O computador servidor precisa estar ligado e conectado a rede para que os demais acessem o sistema.</div>
+
+<!-- ===== POSTGRESQL ===== -->
+<h2 id="postgresql">3. Instalar e Configurar o PostgreSQL</h2>
+
+<div class="step">
+  <span class="step-number">1</span>
+  <span class="step-title">Baixar o PostgreSQL</span>
+  <p>Acesse <code>https://www.postgresql.org/download/windows/</code> e baixe o instalador para Windows.<br>
+  Escolha a versao mais recente (16.x ou superior).</p>
+</div>
+
+<div class="step">
+  <span class="step-number">2</span>
+  <span class="step-title">Instalar</span>
+  <p>Execute o instalador e siga os passos:</p>
+  <ul>
+    <li>Marque todos os componentes (PostgreSQL Server, pgAdmin, Command Line Tools)</li>
+    <li>Diretorio de dados: mantenha o padrao</li>
+    <li><strong>Defina a senha do usuario <code>postgres</code></strong> &mdash; anote essa senha, voce vai precisar dela!</li>
+    <li>Porta: mantenha <strong>5432</strong> (padrao)</li>
+    <li>Locale: mantenha o padrao</li>
+  </ul>
+</div>
+
+<div class="step">
+  <span class="step-number">3</span>
+  <span class="step-title">Criar o banco de dados</span>
+  <p>Abra o <strong>pgAdmin</strong> (instalado junto com o PostgreSQL) ou use o terminal <code>psql</code>:</p>
+  <pre><span class="comment">-- Via psql (abra o "SQL Shell (psql)" no menu iniciar)</span>
+<span class="comment">-- Conecte como usuario postgres com a senha que voce definiu</span>
+
+CREATE DATABASE opecvar;</pre>
+  <p>Ou pelo <strong>pgAdmin</strong>: clique com botao direito em "Databases" &rarr; "Create" &rarr; "Database" &rarr; Nome: <code>opecvar</code> &rarr; Save.</p>
+</div>
+
+<!-- ===== NODE.JS ===== -->
+<h2 id="nodejs">4. Instalar o Node.js</h2>
+
+<div class="step">
+  <span class="step-number">1</span>
+  <span class="step-title">Baixar e instalar</span>
+  <p>Acesse <code>https://nodejs.org</code> e baixe a versao <strong>LTS</strong> (recomendada).</p>
+  <p>Execute o instalador com todas as opcoes padrao. Marque a opcao de adicionar ao PATH se perguntado.</p>
+</div>
+
+<div class="step">
+  <span class="step-number">2</span>
+  <span class="step-title">Verificar a instalacao</span>
+  <p>Abra o <strong>Prompt de Comando</strong> ou <strong>PowerShell</strong> e execute:</p>
+  <pre>node --version
+npm --version</pre>
+  <div class="success">Deve exibir algo como <code>v20.x.x</code> e <code>10.x.x</code></div>
+</div>
+
+<!-- ===== PROJETO ===== -->
+<h2 id="projeto">5. Copiar o Projeto para a Maquina</h2>
+
+<p>Escolha <strong>uma</strong> das opcoes abaixo:</p>
+
+<h3>Opcao A: Copiar a pasta manualmente</h3>
+<div class="step">
+  <p>Copie toda a pasta <code>Organizador_OPECVAR</code> para um local na maquina servidor, por exemplo:</p>
+  <pre>C:\Sistemas\Organizador_OPECVAR</pre>
+</div>
+
+<h3>Opcao B: Clonar via Git</h3>
+<div class="step">
+  <pre><span class="comment"># No Prompt de Comando ou PowerShell:</span>
+cd C:\Sistemas
+git clone &lt;URL_DO_REPOSITORIO&gt; Organizador_OPECVAR</pre>
+</div>
+
+<div class="warning">Nao coloque o projeto em pastas com espacos ou caracteres especiais no caminho (ex: "Meus Documentos").</div>
+
+<!-- ===== DEPENDENCIAS ===== -->
+<h2 id="dependencias">6. Instalar Dependencias</h2>
+
+<div class="step">
+  <span class="step-number">1</span>
+  <span class="step-title">Abrir terminal na pasta do projeto</span>
+  <pre>cd C:\Sistemas\Organizador_OPECVAR</pre>
+</div>
+
+<div class="step">
+  <span class="step-number">2</span>
+  <span class="step-title">Instalar todos os pacotes</span>
+  <pre>npm install</pre>
+  <p>Este comando instala as dependencias do backend e do frontend automaticamente (monorepo com workspaces).</p>
+  <div class="info">Pode levar alguns minutos na primeira vez. Aguarde ate finalizar sem erros.</div>
+</div>
+
+<div class="step">
+  <span class="step-number">3</span>
+  <span class="step-title">Gerar o Prisma Client</span>
+  <pre>npm run prisma:generate --workspace=backend</pre>
+</div>
+
+<!-- ===== VARIAVEIS DE AMBIENTE ===== -->
+<h2 id="env">7. Configurar Variaveis de Ambiente</h2>
+
+<div class="step">
+  <span class="step-number">1</span>
+  <span class="step-title">Criar/Editar o arquivo <code>.env</code></span>
+  <p>Na pasta <code>backend\</code>, crie ou edite o arquivo <code>.env</code> com o seguinte conteudo:</p>
+  <pre><span class="comment"># Conexao com o banco PostgreSQL</span>
+<span class="comment"># Formato: postgresql://USUARIO:SENHA@HOST:PORTA/NOME_BANCO</span>
+<span class="highlight">DATABASE_URL="postgresql://postgres:SUA_SENHA_AQUI@localhost:5432/opecvar"</span>
+
+<span class="comment"># Segredo para tokens JWT (troque para algo unico e longo!)</span>
+<span class="highlight">JWT_SECRET="minha-chave-secreta-com-pelo-menos-32-caracteres-aqui"</span>
+
+<span class="comment"># Porta do servidor</span>
+PORT=3001
+
+<span class="comment"># Modo de execucao</span>
+NODE_ENV=production
+
+<span class="comment"># Origens permitidas (opcional - IPs de rede local sao aceitos automaticamente)</span>
+<span class="comment"># So precisa preencher se houver acesso de fora da rede privada</span>
+<span class="comment"># ALLOWED_ORIGINS="http://exemplo.com"</span></pre>
+</div>
+
+<div class="warning">
+  Substitua:
+  <ul style="margin: 5px 0;">
+    <li><code>SUA_SENHA_AQUI</code> pela senha do PostgreSQL definida na instalacao</li>
+    <li><code>192.168.X.X</code> pelo IP real da maquina servidor (veja como descobrir na secao 12)</li>
+    <li><code>JWT_SECRET</code> por uma string aleatoria e longa para seguranca</li>
+  </ul>
+</div>
+
+<div class="info">
+  Se muitos computadores acessam o sistema (IPs variados), voce pode listar varios IPs separados por virgula em <code>ALLOWED_ORIGINS</code>, ou, para facilitar em ambiente interno, adicionar todos os IPs da sua faixa de rede (ex: <code>http://192.168.1.100:3001,http://192.168.1.101:3001,...</code>).
+</div>
+
+<!-- ===== BANCO DE DADOS ===== -->
+<h2 id="banco">8. Criar o Banco de Dados e Popular</h2>
+
+<div class="step">
+  <span class="step-number">1</span>
+  <span class="step-title">Rodar as migrations (criar tabelas)</span>
+  <pre>cd C:\Sistemas\Organizador_OPECVAR
+npx --workspace=backend prisma migrate deploy</pre>
+  <div class="info">O comando <code>migrate deploy</code> aplica todas as migrations existentes no banco de producao.</div>
+</div>
+
+<div class="step">
+  <span class="step-number">2</span>
+  <span class="step-title">Popular com dados iniciais (seed)</span>
+  <pre>npm run prisma:seed --workspace=backend</pre>
+  <div class="success">Cria o usuario administrador e analistas de teste no banco.</div>
+</div>
+
+<!-- ===== BUILD FRONTEND ===== -->
+<h2 id="build">9. Buildar o Frontend</h2>
+
+<div class="step">
+  <span class="step-number">1</span>
+  <span class="step-title">Gerar os arquivos estaticos</span>
+  <pre>npm run build --workspace=frontend</pre>
+  <p>Isso gera a pasta <code>frontend\dist\</code> com o HTML, CSS e JS otimizados.</p>
+  <div class="info">O backend serve esses arquivos automaticamente em modo producao.</div>
+</div>
+
+<!-- ===== INICIAR ===== -->
+
+<div class="page-break"></div>
+
+<h2 id="iniciar">10. Iniciar o Servidor</h2>
+
+<div class="step">
+  <span class="step-number">1</span>
+  <span class="step-title">Buildar o backend (compilar TypeScript)</span>
+  <pre>npm run build --workspace=backend</pre>
+</div>
+
+<div class="step">
+  <span class="step-number">2</span>
+  <span class="step-title">Iniciar o servidor</span>
+  <pre>npm run start --workspace=backend</pre>
+  <div class="success">
+    Voce vera a mensagem:<br>
+    <code>Server running on http://0.0.0.0:3001 [production]</code><br><br>
+    O servidor ja esta rodando e acessivel na rede!
+  </div>
+</div>
+
+<div class="warning">Mantenha essa janela do terminal <strong>aberta</strong>. Se fechar, o servidor para. Veja a secao 13 para rodar como servico em segundo plano.</div>
+
+<!-- ===== FIREWALL ===== -->
+<h2 id="firewall">11. Liberar no Firewall do Windows</h2>
+
+<p>O Firewall do Windows pode bloquear conexoes de outros computadores. E necessario criar uma regra de entrada.</p>
+
+<div class="step">
+  <span class="step-number">1</span>
+  <span class="step-title">Abrir o Firewall do Windows com Seguranca Avancada</span>
+  <p>Pressione <code>Win + R</code>, digite <code>wf.msc</code> e pressione Enter.</p>
+</div>
+
+<div class="step">
+  <span class="step-number">2</span>
+  <span class="step-title">Criar regra de entrada</span>
+  <ol>
+    <li>Clique em <strong>"Regras de Entrada"</strong> no painel esquerdo</li>
+    <li>Clique em <strong>"Nova Regra..."</strong> no painel direito</li>
+    <li>Selecione <strong>"Porta"</strong> &rarr; Avançar</li>
+    <li>Selecione <strong>"TCP"</strong> e em "Portas locais especificas" digite: <code>3001</code> &rarr; Avançar</li>
+    <li>Selecione <strong>"Permitir a conexao"</strong> &rarr; Avançar</li>
+    <li>Marque <strong>"Dominio"</strong>, <strong>"Particular"</strong> e <strong>"Publico"</strong> &rarr; Avançar</li>
+    <li>Nome: <code>Organizador OPECVAR (porta 3001)</code> &rarr; Concluir</li>
+  </ol>
+</div>
+
+<h3>Alternativa: Via PowerShell (Administrador)</h3>
+<div class="step">
+  <pre><span class="comment"># Abra o PowerShell como Administrador e execute:</span>
+New-NetFirewallRule -DisplayName "Organizador OPECVAR (porta 3001)" `
+  -Direction Inbound -Protocol TCP -LocalPort 3001 -Action Allow</pre>
+</div>
+
+<!-- ===== ACESSAR ===== -->
+<h2 id="acessar">12. Acessar de Outros Computadores</h2>
+
+<div class="step">
+  <span class="step-number">1</span>
+  <span class="step-title">Descobrir o IP da maquina servidor</span>
+  <p>No Prompt de Comando da maquina servidor, execute:</p>
+  <pre>ipconfig</pre>
+  <p>Procure por <strong>"Endereco IPv4"</strong> na interface de rede ativa (Wi-Fi ou Ethernet).<br>
+  Sera algo como: <code>192.168.1.100</code></p>
+</div>
+
+<div class="step">
+  <span class="step-number">2</span>
+  <span class="step-title">Acessar pelo navegador</span>
+  <p>Em qualquer computador da mesma rede, abra o navegador e acesse:</p>
+  <pre>http://192.168.1.100:3001</pre>
+  <p>(substitua pelo IP real da maquina servidor)</p>
+  <div class="success">A tela de login do Organizador OPECVAR deve aparecer!</div>
+</div>
+
+<div class="step">
+  <span class="step-number">3</span>
+  <span class="step-title">Atualizar ALLOWED_ORIGINS (se necessario)</span>
+  <p>Se aparecer erro de CORS, adicione o IP de origem em <code>ALLOWED_ORIGINS</code> no arquivo <code>.env</code>.</p>
+  <p>Uma alternativa pratica para redes internas: liste os IPs de todos os computadores que acessarao, ou considere usar <code>NODE_ENV=development</code> se a seguranca da rede interna ja e controlada.</p>
+</div>
+
+<div class="info">
+  <strong>Dica para facilitar o acesso:</strong> Se possivel, configure um IP fixo na maquina servidor para que o endereco nao mude ao reiniciar o roteador.
+</div>
+
+<!-- ===== SERVICO ===== -->
+
+<div class="page-break"></div>
+
+<h2 id="servico">13. Rodar como Servico em Segundo Plano (Opcional)</h2>
+
+<p>Para que o servidor inicie automaticamente e nao dependa de uma janela aberta, use o <strong>pm2</strong>:</p>
+
+<div class="step">
+  <span class="step-number">1</span>
+  <span class="step-title">Instalar o pm2 globalmente</span>
+  <pre>npm install -g pm2</pre>
+</div>
+
+<div class="step">
+  <span class="step-number">2</span>
+  <span class="step-title">Iniciar o servidor com pm2</span>
+  <pre>cd C:\Sistemas\Organizador_OPECVAR\backend
+pm2 start dist/index.js --name opecvar</pre>
+</div>
+
+<div class="step">
+  <span class="step-number">3</span>
+  <span class="step-title">Comandos uteis do pm2</span>
+  <pre><span class="comment"># Ver status do servidor</span>
+pm2 status
+
+<span class="comment"># Ver logs em tempo real</span>
+pm2 logs opecvar
+
+<span class="comment"># Reiniciar o servidor</span>
+pm2 restart opecvar
+
+<span class="comment"># Parar o servidor</span>
+pm2 stop opecvar</pre>
+</div>
+
+<div class="step">
+  <span class="step-number">4</span>
+  <span class="step-title">Iniciar automaticamente com o Windows (opcional)</span>
+  <pre><span class="comment"># Salvar a lista de processos para reinicio automatico</span>
+pm2 save
+
+<span class="comment"># Configurar para iniciar no boot (Windows)</span>
+pm2-startup install</pre>
+  <div class="info">Siga as instrucoes que o pm2 exibir para completar a configuracao no Windows.</div>
+</div>
+
+<!-- ===== TROUBLESHOOTING ===== -->
+<h2 id="troubleshooting">14. Solucao de Problemas</h2>
+
+<table>
+  <tr><th>Problema</th><th>Solucao</th></tr>
+  <tr>
+    <td><code>ECONNREFUSED</code> ao conectar no banco</td>
+    <td>Verifique se o PostgreSQL esta rodando (Servicos do Windows &rarr; postgresql). Confira a senha no <code>.env</code>.</td>
+  </tr>
+  <tr>
+    <td>Pagina nao carrega de outro PC</td>
+    <td>Verifique se a regra do Firewall foi criada (secao 11). Teste com <code>ping IP_SERVIDOR</code> do outro PC.</td>
+  </tr>
+  <tr>
+    <td>Erro de CORS no navegador</td>
+    <td>Adicione o IP de origem (do PC que esta acessando) em <code>ALLOWED_ORIGINS</code> no <code>.env</code> e reinicie o servidor.</td>
+  </tr>
+  <tr>
+    <td><code>JWT_SECRET deve ter ao menos 32 caracteres</code></td>
+    <td>Troque o <code>JWT_SECRET</code> no <code>.env</code> por uma string com 32+ caracteres.</td>
+  </tr>
+  <tr>
+    <td><code>Cannot find module</code></td>
+    <td>Rode <code>npm install</code> novamente na raiz do projeto.</td>
+  </tr>
+  <tr>
+    <td>Tela branca / erro 404</td>
+    <td>Verifique se o build do frontend foi feito (<code>frontend\dist\</code> deve existir). Rode <code>npm run build --workspace=frontend</code>.</td>
+  </tr>
+  <tr>
+    <td>Porta 3001 ja em uso</td>
+    <td>Troque o <code>PORT</code> no <code>.env</code> para outra porta (ex: 3002) e atualize a regra do Firewall.</td>
+  </tr>
+</table>
+
+<!-- ===== CREDENCIAIS ===== -->
+<h2 id="credenciais">15. Credenciais Padrao</h2>
+
+<table>
+  <tr><th>Usuario</th><th>Email</th><th>Senha</th><th>Perfil</th></tr>
+  <tr><td>Administrador</td><td><code>admin@opecvar.com</code></td><td><code>admin123</code></td><td>MANAGER</td></tr>
+</table>
+
+<div class="warning">Troque a senha do administrador no primeiro acesso! O seed tambem cria 3 analistas de teste.</div>
+
+<!-- ===== RESUMO RAPIDO ===== -->
+<h2>Resumo Rapido (Checklist)</h2>
+
+<div class="step" style="background: #e8f5e9;">
+  <ol style="margin: 0; padding-left: 20px;">
+    <li>Instalar PostgreSQL &rarr; criar banco <code>opecvar</code></li>
+    <li>Instalar Node.js (LTS)</li>
+    <li>Copiar projeto para <code>C:\Sistemas\Organizador_OPECVAR</code></li>
+    <li><code>npm install</code> (na raiz)</li>
+    <li><code>npm run prisma:generate --workspace=backend</code></li>
+    <li>Configurar <code>backend\.env</code> (DATABASE_URL, JWT_SECRET, ALLOWED_ORIGINS)</li>
+    <li><code>npx --workspace=backend prisma migrate deploy</code></li>
+    <li><code>npm run prisma:seed --workspace=backend</code></li>
+    <li><code>npm run build --workspace=frontend</code></li>
+    <li><code>npm run build --workspace=backend</code></li>
+    <li><code>npm run start --workspace=backend</code></li>
+    <li>Liberar porta 3001 no Firewall do Windows</li>
+    <li>Acessar via <code>http://IP_SERVIDOR:3001</code></li>
+  </ol>
+</div>
+
+<div class="footer">
+  Organizador OPECVAR &mdash; Guia de Instalacao em Rede Local &mdash; Abril 2026<br>
+  Equipe OPECVAR
+</div>
+
+</body>
+</html>

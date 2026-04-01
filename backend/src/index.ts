@@ -34,28 +34,48 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false, // needed for some frontend assets
 }));
 
-// CORS — strict in production, permissive in dev
+// CORS — in production the frontend is served by this same server (same-origin),
+// so browser requests from the UI never carry a cross-origin Origin header.
+// We allow same-origin (no Origin header) and any explicitly listed origins.
+// For local-network deployments we also accept private-network IPs automatically.
 const allowedOrigins = env.ALLOWED_ORIGINS
   ? env.ALLOWED_ORIGINS.split(',').map((o) => o.trim())
   : ['http://localhost:5173', 'http://localhost:3000'];
 
+const isPrivateNetworkOrigin = (origin: string): boolean => {
+  try {
+    const url = new URL(origin);
+    const host = url.hostname;
+    return (
+      host === 'localhost' ||
+      host === '127.0.0.1' ||
+      host.startsWith('192.168.') ||
+      host.startsWith('10.') ||
+      /^172\.(1[6-9]|2\d|3[01])\./.test(host)
+    );
+  } catch {
+    return false;
+  }
+};
+
 app.use(cors({
   origin: (origin, callback) => {
-    if (isProduction) {
-      // In production, ALWAYS require a valid origin
-      if (origin && allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    } else {
-      // In dev, allow no-origin (Postman, curl, etc.)
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
+    // No Origin header = same-origin request (browser serving frontend from this server)
+    if (!origin) {
+      callback(null, true);
+      return;
     }
+    // Explicitly listed origins
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+      return;
+    }
+    // Allow any private-network origin (safe for LAN deployments)
+    if (isPrivateNetworkOrigin(origin)) {
+      callback(null, true);
+      return;
+    }
+    callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
