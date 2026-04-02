@@ -16,6 +16,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import TuneIcon from '@mui/icons-material/Tune';
 import SettingsIcon from '@mui/icons-material/Settings';
 import SecurityIcon from '@mui/icons-material/Security';
+import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import { useAuth } from '../../context/AuthContext';
 
 const DRAWER_WIDTH = 260;
@@ -33,6 +34,7 @@ const menuItems: MenuItem[] = [
   { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
   { text: 'Usuarios', icon: <PeopleIcon />, path: '/users', managerOnly: true },
   { text: 'Personalizacao', icon: <TuneIcon />, path: '/admin', managerOnly: true },
+  { text: 'Melhorias', icon: <LightbulbIcon />, path: '/suggestions' },
   { text: 'Auditoria', icon: <SecurityIcon />, path: '/audit-logs', managerOnly: true },
   { text: 'Configuracoes', icon: <SettingsIcon />, path: '/settings' },
 ];

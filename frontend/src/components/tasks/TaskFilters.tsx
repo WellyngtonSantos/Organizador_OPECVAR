@@ -6,6 +6,10 @@ import InputLabel from '@mui/material/InputLabel';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
+import Box from '@mui/material/Box';
+import Checkbox from '@mui/material/Checkbox';
+import ListItemText from '@mui/material/ListItemText';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -20,6 +24,11 @@ interface TaskFiltersProps {
   onFilterChange: (filters: FilterParams) => void;
   buckets: Bucket[];
   analysts: User[];
+}
+
+function toArray(value: string | string[] | undefined): string[] {
+  if (!value) return [];
+  return Array.isArray(value) ? value : [value];
 }
 
 export default function TaskFilters({
@@ -40,10 +49,11 @@ export default function TaskFilters({
     return () => clearTimeout(timer);
   }, [searchText]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleSelectChange = useCallback(
-    (field: keyof FilterParams) => (event: SelectChangeEvent<string>) => {
+  const handleMultiSelectChange = useCallback(
+    (field: keyof FilterParams) => (event: SelectChangeEvent<string[]>) => {
       const value = event.target.value;
-      onFilterChange({ ...filters, [field]: value || undefined, page: 1 });
+      const arr = typeof value === 'string' ? value.split(',') : value;
+      onFilterChange({ ...filters, [field]: arr.length > 0 ? arr : undefined, page: 1 });
     },
     [filters, onFilterChange],
   );
@@ -53,11 +63,16 @@ export default function TaskFilters({
     onFilterChange({ page: 1, pageSize: filters.pageSize });
   }, [filters.pageSize, onFilterChange]);
 
+  const statusValues = toArray(filters.status);
+  const priorityValues = toArray(filters.priority);
+  const bucketValues = toArray(filters.bucketId);
+  const analystValues = toArray(filters.analystId);
+
   const hasActiveFilters =
-    !!filters.status ||
-    !!filters.priority ||
-    !!filters.bucketId ||
-    !!filters.analystId ||
+    statusValues.length > 0 ||
+    priorityValues.length > 0 ||
+    bucketValues.length > 0 ||
+    analystValues.length > 0 ||
     !!searchText;
 
   return (
@@ -86,65 +101,99 @@ export default function TaskFilters({
         sx={{ minWidth: 220 }}
       />
 
-      <FormControl size="small" sx={{ minWidth: 150 }}>
+      <FormControl size="small" sx={{ minWidth: 170 }}>
         <InputLabel>Status</InputLabel>
         <Select
-          value={filters.status ?? ''}
+          multiple
+          value={statusValues}
           label="Status"
-          onChange={handleSelectChange('status')}
+          onChange={handleMultiSelectChange('status')}
+          renderValue={(selected) => (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {selected.map((v) => (
+                <Chip key={v} label={statusLabels[v as Status] ?? v} size="small" />
+              ))}
+            </Box>
+          )}
         >
-          <MenuItem value="">Todos</MenuItem>
           {Object.values(Status).map((s) => (
             <MenuItem key={s} value={s}>
-              {statusLabels[s]}
+              <Checkbox checked={statusValues.includes(s)} size="small" />
+              <ListItemText primary={statusLabels[s]} />
             </MenuItem>
           ))}
         </Select>
       </FormControl>
 
-      <FormControl size="small" sx={{ minWidth: 150 }}>
+      <FormControl size="small" sx={{ minWidth: 170 }}>
         <InputLabel>Prioridade</InputLabel>
         <Select
-          value={filters.priority ?? ''}
+          multiple
+          value={priorityValues}
           label="Prioridade"
-          onChange={handleSelectChange('priority')}
+          onChange={handleMultiSelectChange('priority')}
+          renderValue={(selected) => (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {selected.map((v) => (
+                <Chip key={v} label={priorityLabels[v as Priority] ?? v} size="small" />
+              ))}
+            </Box>
+          )}
         >
-          <MenuItem value="">Todas</MenuItem>
           {Object.values(Priority).map((p) => (
             <MenuItem key={p} value={p}>
-              {priorityLabels[p]}
+              <Checkbox checked={priorityValues.includes(p)} size="small" />
+              <ListItemText primary={priorityLabels[p]} />
             </MenuItem>
           ))}
         </Select>
       </FormControl>
 
-      <FormControl size="small" sx={{ minWidth: 150 }}>
+      <FormControl size="small" sx={{ minWidth: 170 }}>
         <InputLabel>Tipo</InputLabel>
         <Select
-          value={filters.bucketId ?? ''}
+          multiple
+          value={bucketValues}
           label="Tipo"
-          onChange={handleSelectChange('bucketId')}
+          onChange={handleMultiSelectChange('bucketId')}
+          renderValue={(selected) => (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {selected.map((v) => {
+                const bucket = buckets.find((b) => b.id === v);
+                return <Chip key={v} label={bucket?.name ?? v} size="small" />;
+              })}
+            </Box>
+          )}
         >
-          <MenuItem value="">Todos</MenuItem>
           {buckets.map((b) => (
             <MenuItem key={b.id} value={b.id}>
-              {b.name}
+              <Checkbox checked={bucketValues.includes(b.id)} size="small" />
+              <ListItemText primary={b.name} />
             </MenuItem>
           ))}
         </Select>
       </FormControl>
 
-      <FormControl size="small" sx={{ minWidth: 150 }}>
+      <FormControl size="small" sx={{ minWidth: 170 }}>
         <InputLabel>Analista</InputLabel>
         <Select
-          value={filters.analystId ?? ''}
+          multiple
+          value={analystValues}
           label="Analista"
-          onChange={handleSelectChange('analystId')}
+          onChange={handleMultiSelectChange('analystId')}
+          renderValue={(selected) => (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {selected.map((v) => {
+                const analyst = analysts.find((a) => a.id === v);
+                return <Chip key={v} label={analyst?.name ?? v} size="small" />;
+              })}
+            </Box>
+          )}
         >
-          <MenuItem value="">Todos</MenuItem>
           {analysts.map((a) => (
             <MenuItem key={a.id} value={a.id}>
-              {a.name}
+              <Checkbox checked={analystValues.includes(a.id)} size="small" />
+              <ListItemText primary={a.name} />
             </MenuItem>
           ))}
         </Select>

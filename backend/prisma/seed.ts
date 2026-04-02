@@ -22,7 +22,7 @@ async function main() {
   console.log('All data cleared');
 
   // Create only the admin user
-  const passwordHash = await bcrypt.hash('admin123', 12);
+  const passwordHash = await bcrypt.hash('Admin123', 12);
 
   const manager = await prisma.user.upsert({
     where: { email: 'admin@opecvar.com' },

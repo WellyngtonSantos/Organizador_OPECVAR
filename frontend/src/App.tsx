@@ -13,6 +13,7 @@ import UsersPage from './pages/UsersPage';
 import AdminPage from './pages/AdminPage';
 import AuditLogPage from './pages/AuditLogPage';
 import ExternalRequestPage from './pages/ExternalRequestPage';
+import SuggestionsPage from './pages/SuggestionsPage';
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
                 <Route path="/queue" element={<QueuePage />} />
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
+                <Route path="/suggestions" element={<SuggestionsPage />} />
                 <Route element={<ManagerRoute />}>
                   <Route path="/users" element={<UsersPage />} />
                   <Route path="/admin" element={<AdminPage />} />

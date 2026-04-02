@@ -23,16 +23,20 @@ export class TaskService {
     const where: any = {};
 
     if (filters.status) {
-      where.status = filters.status;
+      const values = filters.status.split(',').filter(Boolean);
+      where.status = values.length === 1 ? values[0] : { in: values };
     }
     if (filters.priority) {
-      where.priority = filters.priority;
+      const values = filters.priority.split(',').filter(Boolean);
+      where.priority = values.length === 1 ? values[0] : { in: values };
     }
     if (filters.bucketId) {
-      where.bucketId = filters.bucketId;
+      const values = filters.bucketId.split(',').filter(Boolean);
+      where.bucketId = values.length === 1 ? values[0] : { in: values };
     }
     if (filters.analystId) {
-      where.analystId = filters.analystId;
+      const values = filters.analystId.split(',').filter(Boolean);
+      where.analystId = values.length === 1 ? values[0] : { in: values };
     }
     if (filters.search) {
       where.name = {

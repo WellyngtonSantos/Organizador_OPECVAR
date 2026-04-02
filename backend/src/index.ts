@@ -15,41 +15,48 @@ if (isProduction) {
   app.set('trust proxy', 1);
 }
 
-// Security headers — customized for production
+// Security headers — relaxed for LAN (HTTP only, no HTTPS)
 app.use(helmet({
   contentSecurityPolicy: isProduction ? {
+    useDefaults: false,
     directives: {
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
       imgSrc: ["'self'", 'data:'],
       connectSrc: ["'self'"],
-      fontSrc: ["'self'"],
+      fontSrc: ["'self'", 'https://fonts.gstatic.com'],
       objectSrc: ["'none'"],
       frameAncestors: ["'none'"],
+      // NOT including upgrade-insecure-requests — we run on HTTP in LAN
     },
   } : false,
-  hsts: isProduction ? { maxAge: 31536000, includeSubDomains: true, preload: true } : false,
+  hsts: false,
+  crossOriginOpenerPolicy: false,
+  originAgentCluster: false,
+  crossOriginResourcePolicy: false,
   referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
-  crossOriginEmbedderPolicy: false, // needed for some frontend assets
+  crossOriginEmbedderPolicy: false,
 }));
 
 // CORS — strict in production, permissive in dev
 const allowedOrigins = env.ALLOWED_ORIGINS
   ? env.ALLOWED_ORIGINS.split(',').map((o) => o.trim())
   : ['http://localhost:5173', 'http://localhost:3000'];
+const allowAllOrigins = allowedOrigins.includes('*');
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (isProduction) {
-      // In production, ALWAYS require a valid origin
+    if (allowAllOrigins) {
+      // Allow all origins (LAN access)
+      callback(null, true);
+    } else if (isProduction) {
       if (origin && allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
       }
     } else {
-      // In dev, allow no-origin (Postman, curl, etc.)
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {

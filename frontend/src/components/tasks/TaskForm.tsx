@@ -116,6 +116,10 @@ export default function TaskForm({
     e.preventDefault();
     if (!validate()) return;
 
+    // Convert YYYY-MM-DD to ISO datetime for backend validation
+    const toISO = (dateStr: string): string | null =>
+      dateStr ? new Date(dateStr + 'T00:00:00.000Z').toISOString() : null;
+
     const data: CreateTaskInput | UpdateTaskInput = {
       name: form.name.trim(),
       description: form.description.trim() || null,
@@ -123,9 +127,9 @@ export default function TaskForm({
       bucketId: form.bucketId || null,
       priority: form.priority,
       status: form.status,
-      receivedDate: form.receivedDate,
-      startDate: form.startDate || null,
-      estimatedCompletionDate: form.estimatedCompletionDate || null,
+      receivedDate: toISO(form.receivedDate),
+      startDate: toISO(form.startDate),
+      estimatedCompletionDate: toISO(form.estimatedCompletionDate),
       estimatedHours: form.estimatedHours ? parseFloat(form.estimatedHours) : null,
       labelIds: form.labelIds,
     };

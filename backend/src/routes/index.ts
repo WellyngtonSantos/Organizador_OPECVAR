@@ -11,6 +11,7 @@ import exportRoutes from './export.routes';
 import importRoutes from './import.routes';
 import publicRoutes from './public.routes';
 import auditRoutes from './audit.routes';
+import suggestionRoutes from './suggestion.routes';
 
 const router = Router();
 
@@ -30,5 +31,6 @@ router.use('/export', exportRoutes);
 router.use('/import', importRoutes);
 router.use('/public', publicRoutes);
 router.use('/audit-logs', auditRoutes);
+router.use('/suggestions', suggestionRoutes);
 
 export default router;

@@ -108,10 +108,10 @@ export default function TaskListPage() {
       setExporting(true);
       try {
         const params = new URLSearchParams();
-        if (filters.status) params.set('status', filters.status);
-        if (filters.priority) params.set('priority', filters.priority);
-        if (filters.bucketId) params.set('bucketId', filters.bucketId);
-        if (filters.analystId) params.set('analystId', filters.analystId);
+        if (filters.status) params.set('status', Array.isArray(filters.status) ? filters.status.join(',') : filters.status);
+        if (filters.priority) params.set('priority', Array.isArray(filters.priority) ? filters.priority.join(',') : filters.priority);
+        if (filters.bucketId) params.set('bucketId', Array.isArray(filters.bucketId) ? filters.bucketId.join(',') : filters.bucketId);
+        if (filters.analystId) params.set('analystId', Array.isArray(filters.analystId) ? filters.analystId.join(',') : filters.analystId);
 
         const token = localStorage.getItem('token');
         const url = `/api/export/${format}?${params.toString()}`;

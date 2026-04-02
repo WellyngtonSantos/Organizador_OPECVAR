@@ -4,9 +4,13 @@ import type { PaginatedResponse, FilterParams } from '../types/common';
 
 export async function getTasks(params?: FilterParams): Promise<PaginatedResponse<Task>> {
   const queryParams = params ? {
-    ...params,
+    status: Array.isArray(params.status) ? params.status.join(',') : params.status,
+    priority: Array.isArray(params.priority) ? params.priority.join(',') : params.priority,
+    bucketId: Array.isArray(params.bucketId) ? params.bucketId.join(',') : params.bucketId,
+    analystId: Array.isArray(params.analystId) ? params.analystId.join(',') : params.analystId,
+    search: params.search,
+    page: params.page,
     limit: params.pageSize,
-    pageSize: undefined,
   } : undefined;
   const response = await apiClient.get('/tasks', { params: queryParams });
   const { tasks, pagination } = response.data;

@@ -43,6 +43,7 @@ model User {
   taskHistory   TaskHistory[]
   timerSessions TimerSession[]
   auditLogs     AuditLog[]
+  suggestions   Suggestion[]
 }
 
 model Bucket {
@@ -129,6 +130,30 @@ model TimerSession {
   startedAt DateTime  @default(now())
   stoppedAt DateTime?
   hours     Float?
+}
+
+enum SuggestionStatus {
+  OPEN
+  IN_REVIEW
+  ACCEPTED
+  DONE
+  REJECTED
+}
+
+model Suggestion {
+  id          String           @id @default(uuid())
+  title       String
+  description String
+  authorId    String
+  author      User             @relation(fields: [authorId], references: [id])
+  status      SuggestionStatus @default(OPEN)
+  adminNote   String?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@index([authorId])
+  @@index([createdAt])
+  @@index([status])
 }
 
 enum AuditAction {

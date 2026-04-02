@@ -12,10 +12,10 @@ export interface PaginatedResponse<T> {
 }
 
 export interface FilterParams {
-  analystId?: string;
-  status?: string;
-  priority?: string;
-  bucketId?: string;
+  analystId?: string | string[];
+  status?: string | string[];
+  priority?: string | string[];
+  bucketId?: string | string[];
   labelId?: string;
   search?: string;
   page?: number;

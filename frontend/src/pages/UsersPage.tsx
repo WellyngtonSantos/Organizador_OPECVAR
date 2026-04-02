@@ -89,7 +89,11 @@ export default function UsersPage() {
     const errors: Record<string, string> = {};
     if (!form.name.trim()) errors.name = 'Nome obrigatorio';
     if (!form.email.trim()) errors.email = 'Email obrigatorio';
-    if (dialogMode === 'create' && form.password.length < 6) errors.password = 'Minimo 6 caracteres';
+    if (dialogMode === 'create') {
+      if (form.password.length < 8) errors.password = 'Minimo 8 caracteres';
+      else if (!/[A-Z]/.test(form.password)) errors.password = 'Deve conter ao menos uma letra maiuscula';
+      else if (!/[0-9]/.test(form.password)) errors.password = 'Deve conter ao menos um numero';
+    }
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -129,8 +133,10 @@ export default function UsersPage() {
     setPasswordDialogOpen(true);
   }, []);
 
+  const passwordValid = newPassword.length >= 8 && /[A-Z]/.test(newPassword) && /[0-9]/.test(newPassword);
+
   const handleResetPassword = useCallback(async () => {
-    if (newPassword.length < 6) return;
+    if (!passwordValid) return;
     try {
       await resetPassword(passwordUserId, newPassword);
       setPasswordDialogOpen(false);
@@ -138,7 +144,7 @@ export default function UsersPage() {
     } catch {
       setSnackbar({ open: true, message: 'Erro ao resetar senha.', severity: 'error' });
     }
-  }, [passwordUserId, newPassword, resetPassword]);
+  }, [passwordUserId, newPassword, passwordValid, resetPassword]);
 
   const handleOpenDelete = useCallback((userId: string) => {
     setDeleteUserId(userId);
@@ -268,7 +274,7 @@ export default function UsersPage() {
                 value={form.password}
                 onChange={(e) => setForm((prev) => ({ ...prev, password: e.target.value }))}
                 error={!!formErrors.password}
-                helperText={formErrors.password || 'Minimo 6 caracteres'}
+                helperText={formErrors.password || 'Min 8 chars, 1 maiuscula, 1 numero'}
                 fullWidth
                 size="small"
               />
@@ -306,12 +312,12 @@ export default function UsersPage() {
             fullWidth
             size="small"
             sx={{ mt: 1 }}
-            helperText="Minimo 6 caracteres"
+            helperText="Min 8 chars, 1 maiuscula, 1 numero"
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setPasswordDialogOpen(false)}>Cancelar</Button>
-          <Button variant="contained" onClick={handleResetPassword} disabled={newPassword.length < 6}>
+          <Button variant="contained" onClick={handleResetPassword} disabled={!passwordValid}>
             Resetar
           </Button>
         </DialogActions>
